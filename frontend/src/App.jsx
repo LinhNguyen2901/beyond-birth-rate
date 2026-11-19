@@ -40,9 +40,10 @@ export default function App() {
           <span className="section-number">01</span>
           <div>
             <h2 id="section-1">A world of changing paths</h2>
-            <p>Fertility fell broadly, but every economy followed its own path. Highlight one economy, then explore the median trends below.</p>
+            <p>Start with the broad trends, then scroll through individual economies to see how their paths differ.</p>
           </div>
         </div>
+        <MedianTrends />
         <ScrollStory steps={[
           { title: 'Many paths, one broad shift.', country: 'IND', text: 'Follow India through the web of country histories. Across the sample, the median fertility rate moves downward—but no single line tells the whole story.', detail: '1990–2024 · 182 economies' },
           { title: 'The pace is not the same.', country: 'NGA', text: 'Now follow Nigeria. Its path sits above the median, even as fertility falls. The broad trend leaves room for very different starting points and speeds of change.', detail: 'Highlighted economy · Nigeria' },
@@ -50,7 +51,6 @@ export default function App() {
         ]}>
           {step => <OpeningStep country={step.country} onCountrySelect={setSelectedCountry} />}
         </ScrollStory>
-        <MedianTrends />
       </section>
 
       <section className="story-section" aria-labelledby="section-2">
