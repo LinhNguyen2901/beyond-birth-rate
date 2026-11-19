@@ -1,16 +1,21 @@
 import { useEffect, useRef, useState } from 'react'
 import * as d3 from 'd3'
 import data from '../data/country_year.json'
+import educationData from '../data/education_year.json'
 import { addTooltip } from '../chartTooltip'
 
 const colors = d3.scaleOrdinal(d3.schemeTableau10)
+const historyMax = { fertility: 8, mortality: 500, education: 180 }
 
 export default function OverviewChart({ selectedCountry, onCountrySelect }) {
   const [year, setYear] = useState(2024)
   const scatterRef = useRef(null)
   const fertilityRef = useRef(null)
   const gdpRef = useRef(null)
+  const mortalityRef = useRef(null)
+  const educationRef = useRef(null)
   const country = data.find(d => d.iso3 === selectedCountry)
+  const educationCount = educationData.filter(d => d.iso3 === selectedCountry).length
 
   useEffect(() => {
     const current = data.filter(d => d.year === year)
@@ -46,25 +51,56 @@ export default function OverviewChart({ selectedCountry, onCountrySelect }) {
 
   useEffect(() => {
     const history = data.filter(d => d.iso3 === selectedCountry)
-    for (const [ref, key, label] of [
-      [fertilityRef, 'fertility', 'Births per woman'],
-      [gdpRef, 'gdp_pc', 'GDP per person (constant 2015 US$)'],
+    const educationHistory = educationData.filter(d => d.iso3 === selectedCountry)
+    for (const [ref, rows, key, label] of [
+      [fertilityRef, history, 'fertility', 'Births per woman'],
+      [gdpRef, history, 'gdp_pc', 'GDP per person (2015 US$, log scale)'],
+      [mortalityRef, history, 'mortality', 'Under-five deaths per 1,000'],
+      [educationRef, educationHistory, 'education', 'Female secondary enrollment (%)'],
     ]) {
       const svg = d3.select(ref.current).attr('viewBox', '0 0 300 150')
       svg.selectAll('*').remove()
       const chart = svg.append('g').attr('transform', 'translate(42,10)')
-      const x = d3.scaleLinear().domain([1990, 2024]).range([0, 240])
-      const y = d3.scaleLinear().domain([0, d3.max(history, d => d[key]) * 1.1])
-        .nice().range([105, 0])
+      const x = d3.scaleLinear().domain(key === 'education' ? [2001, 2023] : [1990, 2024]).range([0, 240])
+      const y = key === 'gdp_pc'
+        ? d3.scaleLog().domain([100, 300000]).range([105, 0])
+        : d3.scaleLinear().domain([0, historyMax[key]]).range([105, 0])
       chart.append('g').attr('transform', 'translate(0,105)')
-        .call(d3.axisBottom(x).tickValues([1990, 2000, 2010, 2024]).tickFormat(d3.format('d')))
+        .call(d3.axisBottom(x).tickValues(key === 'education'
+          ? [2001, 2010, 2023] : [1990, 2000, 2010, 2024]).tickFormat(d3.format('d')))
       chart.append('g').call(d3.axisLeft(y).ticks(3).tickFormat(key === 'gdp_pc' ? d3.format('~s') : d3.format('~g')))
-      chart.append('path').datum(history).attr('fill', 'none').attr('stroke', '#e69500')
-        .attr('stroke-width', 2.5)
-        .attr('d', d3.line().x(d => x(d.year)).y(d => y(d[key])))
-      chart.selectAll('circle').data([history[0], history[history.length - 1]]).join('circle')
-        .attr('cx', d => x(d.year)).attr('cy', d => y(d[key]))
-        .attr('r', 3.5).attr('fill', '#e69500')
+      if (rows.length) {
+        chart.append('path').datum(rows).attr('fill', 'none').attr('stroke', '#e69500')
+          .attr('stroke-width', 2.5)
+          .attr('d', d3.line().x(d => x(d.year)).y(d => y(d[key])))
+        chart.selectAll('circle').data([rows[0], rows[rows.length - 1]]).join('circle')
+          .attr('cx', d => x(d.year)).attr('cy', d => y(d[key]))
+          .attr('r', 3.5).attr('fill', '#e69500')
+        const focus = chart.append('circle').attr('r', 5).attr('fill', '#e69500').style('display', 'none')
+        const step = 240 / (key === 'education' ? 22 : 34)
+        const hits = chart.selectAll('.trend-hit').data(rows).join('rect')
+          .attr('class', 'trend-hit')
+          .attr('x', d => x(d.year) - step / 2).attr('y', 0)
+          .attr('width', step).attr('height', 105)
+          .attr('pointer-events', 'all').attr('tabindex', 0)
+          .attr('aria-label', d => `${d.year}: ${label} ${d[key].toFixed(2)}`)
+        function highlight(d) {
+          focus.attr('cx', x(d.year)).attr('cy', y(d[key])).style('display', null)
+        }
+        hits.on('mouseover.highlight', (event, d) => highlight(d))
+          .on('focus.highlight', (event, d) => highlight(d))
+          .on('mouseout.highlight', () => focus.style('display', 'none'))
+          .on('blur.highlight', () => focus.style('display', 'none'))
+        addTooltip(hits, ref.current, d => {
+          const title = key === 'gdp_pc' ? 'GDP per person' : key === 'mortality'
+            ? 'Under-five mortality' : key === 'education' ? 'Female secondary enrollment' : 'Fertility'
+          const value = key === 'gdp_pc' ? `$${d3.format(',.0f')(d[key])}`
+            : key === 'fertility' ? `${d[key].toFixed(2)} births per woman`
+              : key === 'mortality' ? `${d[key].toFixed(1)} deaths per 1,000 live births`
+                : `${d[key].toFixed(1)}%`
+          return `${d.country}, ${d.year}\n${title}: ${value}`
+        })
+      }
       chart.append('text').attr('x', 0).attr('y', -1).text(label)
     }
   }, [selectedCountry])
@@ -83,11 +119,35 @@ export default function OverviewChart({ selectedCountry, onCountrySelect }) {
         </div>
         <div>
           <h2>B &nbsp; Following {country?.country}</h2>
-          <p>1990–2024 · 35 annual observations</p>
-          <h3>Fertility</h3>
-          <svg ref={fertilityRef} role="img" aria-label={`Fertility history for ${country?.country}`} />
-          <h3>GDP per person</h3>
-          <svg ref={gdpRef} role="img" aria-label={`GDP per person history for ${country?.country}`} />
+          <p>1990–2024 main sample · 35 annual observations</p>
+          <p className="history-note">Each measure keeps the same axes when you choose another economy.</p>
+          <div className="overview-history-grid">
+            <div>
+              <h3>Fertility</h3>
+              <svg ref={fertilityRef} role="img" aria-label={`Fertility history for ${country?.country}`} />
+              <div className="chart-tooltip" aria-hidden="true" />
+              <p className="chart-readout" aria-live="polite">Hover or focus for exact values.</p>
+            </div>
+            <div>
+              <h3>GDP per person</h3>
+              <svg ref={gdpRef} role="img" aria-label={`GDP per person history for ${country?.country}`} />
+              <div className="chart-tooltip" aria-hidden="true" />
+              <p className="chart-readout" aria-live="polite">Hover or focus for exact values.</p>
+            </div>
+            <div>
+              <h3>Under-five mortality</h3>
+              <svg ref={mortalityRef} role="img" aria-label={`Under-five mortality history for ${country?.country}`} />
+              <div className="chart-tooltip" aria-hidden="true" />
+              <p className="chart-readout" aria-live="polite">Hover or focus for exact values.</p>
+            </div>
+            <div>
+              <h3>Female secondary enrollment</h3>
+              <svg ref={educationRef} role="img" aria-label={`Female secondary enrollment history for ${country?.country}`} />
+              <div className="chart-tooltip" aria-hidden="true" />
+              {educationCount > 0 && <p className="chart-readout" aria-live="polite">Hover or focus for exact values.</p>}
+              <p className="history-note">Separate 2001–2023 sample{educationCount > 0 && ` · ${educationCount} observations`}. Gross enrollment can exceed 100%.</p>
+            </div>
+          </div>
         </div>
       </div>
       <p className="chart-source">Dot colors show World Bank regions. Select a dot to follow that economy. Source: World Bank WDI.</p>

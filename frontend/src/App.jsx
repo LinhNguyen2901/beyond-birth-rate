@@ -1,9 +1,8 @@
 import { useState } from 'react'
+import AllCountryFertilityChart from './components/AllCountryFertilityChart'
 import MedianTrends from './components/MedianTrends'
 import FertilityVsIndicatorScatterplot from './components/FertilityVsIndicatorScatterplot'
 import CountryChangeChart from './components/CountryChangeChart'
-import EducationChart from './components/EducationChart'
-import CountryHistoryChart from './components/CountryHistoryChart'
 import PeerHistoryChart from './components/PeerHistoryChart'
 import ModelComparisonChart from './components/ModelComparisonChart'
 import OverviewChart from './components/OverviewChart'
@@ -16,31 +15,77 @@ export default function App() {
     <main className="page">
       <header className="intro">
         <div className="eyebrow">World Bank data · 1990–2024</div>
-        <h1>Fertility and development</h1>
-        <p>How have fertility rates changed alongside income, child survival, and education? Explore the broad pattern, then look at where economies differ.</p>
-        <p className="interaction-hint">Hover or focus chart marks for exact values. Select a country dot to update its history.</p>
+        <h1>Beyond the Birth Rate</h1>
+        <p>Fertility fell across many economies, but each followed its own path. Explore how those paths changed alongside income, child survival, and education.</p>
+        <p className="interaction-hint">Hover or focus chart marks for exact values. Select a country dot to follow its history.</p>
       </header>
 
-      <OverviewChart selectedCountry={selectedCountry} onCountrySelect={setSelectedCountry} />
+      <section className="story-section" aria-labelledby="section-1">
+        <div className="section-intro">
+          <span className="section-number">01</span>
+          <div>
+            <h2 id="section-1">A world of changing paths</h2>
+            <p>Fertility fell broadly, but every economy followed its own path. Highlight one economy, then explore the median trends below.</p>
+          </div>
+        </div>
+        <AllCountryFertilityChart selectedCountry={selectedCountry} onCountrySelect={setSelectedCountry} />
+        <MedianTrends />
+      </section>
 
-      <h2 className="chapter-heading"><span>01</span> The broad shift</h2>
-      <MedianTrends />
+      <section className="story-section" aria-labelledby="section-2">
+        <div className="section-intro">
+          <span className="section-number">02</span>
+          <div>
+            <h2 id="section-2">What changes alongside fertility?</h2>
+            <p>Compare fertility with income, child mortality, or female secondary enrollment in one chart. Choose a measure and year to explore the pattern.</p>
+          </div>
+        </div>
+        <FertilityVsIndicatorScatterplot selectedCountry={selectedCountry} onCountrySelect={setSelectedCountry} />
+      </section>
 
-      <h2 className="chapter-heading"><span>02</span> Compare economies</h2>
-      <FertilityVsIndicatorScatterplot selectedCountry={selectedCountry} onCountrySelect={setSelectedCountry} />
+      <section className="story-section" aria-labelledby="section-3">
+        <div className="section-intro">
+          <span className="section-number">03</span>
+          <div>
+            <h2 id="section-3">Follow one dot</h2>
+            <p>One dot has a history of its own. Select an economy to follow fertility, income, child mortality, and available education data over time.</p>
+          </div>
+        </div>
+        <OverviewChart selectedCountry={selectedCountry} onCountrySelect={setSelectedCountry} />
+      </section>
 
-      <h2 className="chapter-heading"><span>03</span> Changes over time</h2>
-      <CountryChangeChart />
+      <section className="story-section" aria-labelledby="section-4">
+        <div className="section-intro">
+          <span className="section-number">04</span>
+          <div>
+            <h2 id="section-4">Did they change together?</h2>
+            <p>Comparing each economy in 1990 and 2024 asks a different question: how did fertility change alongside child mortality or income?</p>
+          </div>
+        </div>
+        <CountryChangeChart />
+      </section>
 
-      <h2 className="chapter-heading"><span>04</span> Education, with a narrower lens</h2>
-      <EducationChart />
+      <section className="story-section" aria-labelledby="section-5">
+        <div className="section-intro">
+          <span className="section-number">05</span>
+          <div>
+            <h2 id="section-5">Similar beginnings, different journeys</h2>
+            <p>Economies with similar measured starting conditions can still take different paths. Follow the Central African Republic and five peers.</p>
+          </div>
+        </div>
+        <PeerHistoryChart />
+      </section>
 
-      <h2 className="chapter-heading"><span>05</span> Follow a country</h2>
-      <CountryHistoryChart selectedCountry={selectedCountry} onCountrySelect={setSelectedCountry} />
-      <PeerHistoryChart />
-
-      <h2 className="chapter-heading"><span>06</span> Prediction</h2>
-      <ModelComparisonChart />
+      <section className="story-section" aria-labelledby="section-6">
+        <div className="section-intro">
+          <span className="section-number">06</span>
+          <div>
+            <h2 id="section-6">Can we predict fertility?</h2>
+            <p>Income, child mortality, and education can improve predictions, but errors remain. These comparisons describe patterns, not causes.</p>
+          </div>
+        </div>
+        <ModelComparisonChart />
+      </section>
     </main>
   )
 }
