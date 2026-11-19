@@ -2,6 +2,15 @@ import { useEffect, useRef } from 'react'
 import * as d3 from 'd3'
 import scores from '../data/model_scores.json'
 import { addTooltip } from '../chartTooltip'
+import { measureColors, selectionColor } from '../chartColors'
+
+const colors = {
+  'Median baseline': '#8297a8',
+  'All three indicators': selectionColor,
+  'Without GDP': measureColors.gdp_pc,
+  'Without education': measureColors.education,
+  'Without mortality': measureColors.mortality,
+}
 
 const labels = {
   'Median baseline': 'Guess the median',
@@ -39,7 +48,7 @@ export default function ModelComparisonChart() {
     const bars = chart.selectAll('rect').data(scores).join('rect')
       .attr('x', 0).attr('y', d => y(d.name))
       .attr('width', d => x(d.mae)).attr('height', y.bandwidth())
-      .attr('fill', d => d.name === 'All three indicators' ? '#1a7774' : d.name === 'Median baseline' ? '#8297a8' : '#c09a6b')
+      .attr('fill', d => colors[d.name])
 
     chart.selectAll('.value').data(scores).join('text')
       .attr('class', 'value').attr('x', d => x(d.mae) + 6)
@@ -83,7 +92,7 @@ export default function ModelComparisonChart() {
         </div>
       </div>
       <h3>What if we leave one measure out?</h3>
-      <p>The bottom three bars each remove one measure from the same model. This shows what that measure adds when the other two are already included.</p>
+      <p>The bottom three bars use the color of the measure left out. Compare each with the navy bar to see how the error changes.</p>
       <svg ref={chartRef} role="img" aria-label="Model errors for baseline and indicator combinations" />
       <div className="chart-tooltip" aria-hidden="true" />
       <p className="chart-readout" aria-live="polite">Hover or focus a mark to see its exact values.</p>

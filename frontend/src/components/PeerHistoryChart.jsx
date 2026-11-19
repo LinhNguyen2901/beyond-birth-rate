@@ -3,9 +3,10 @@ import * as d3 from 'd3'
 import data from '../data/country_year.json'
 import educationData from '../data/education_year.json'
 import { addTooltip } from '../chartTooltip'
-import { countryColors } from '../chartColors'
+import { measureColors, selectionColor } from '../chartColors'
 
-const colors = countryColors
+const colors = [selectionColor, measureColors.fertility, '#438f8c', '#145653', '#619e9b', '#306b68']
+const dashes = [null, null, '9 4', '3 4', '12 4 3 4', '2 3']
 const education2001 = new Map(educationData.filter(d => d.year === 2001).map(d => [d.iso3, d.education]))
 const choices = data.filter(d => d.year === 2001 && education2001.has(d.iso3))
   .map(d => ({ ...d, education: education2001.get(d.iso3) }))
@@ -35,6 +36,7 @@ export default function PeerHistoryChart() {
     return [chosen, ...peers].map((start, index) => ({
       iso3: start.iso3,
       color: colors[index],
+      dash: dashes[index],
       start,
       history: data.filter(d => d.iso3 === start.iso3 && d.year >= 2001 && d.year <= 2023),
     }))
@@ -61,6 +63,7 @@ export default function PeerHistoryChart() {
     const lines = chart.selectAll('.peer-line').data(countries).join('path')
       .attr('class', 'peer-line').attr('fill', 'none')
       .attr('stroke', d => d.color).attr('stroke-width', d => d.iso3 === selectedCountry ? 4 : 3)
+      .attr('stroke-dasharray', d => d.dash)
       .attr('d', d => line(d.history))
     const hits = chart.selectAll('.peer-hit').data(countries).join('path')
       .attr('class', 'peer-hit').attr('fill', 'none')
@@ -96,7 +99,7 @@ export default function PeerHistoryChart() {
         </label>
       </div>
       <div className="peer-legend">
-        {countries.map((d, index) => <span key={d.iso3}><i style={{ borderColor: d.color }} />{d.start.country}{index === 0 && ' (chosen)'}</span>)}
+        {countries.map((d, index) => <span key={d.iso3}><i style={{ borderColor: d.color, borderTopStyle: d.dash ? 'dashed' : 'solid' }} />{d.start.country}{index === 0 && ' (chosen)'}</span>)}
       </div>
       <svg ref={chartRef} role="img" aria-label={`Fertility histories for ${countries[0].start.country} and ${countries.length - 1} nearby peers, 2001 to 2023`} />
       <div className="chart-tooltip" aria-hidden="true" />

@@ -60,11 +60,11 @@ export default function AllCountryFertilityChart({ selectedCountry, onCountrySel
       .attr('stroke', '#fff').attr('stroke-width', 6)
     chart.append('path').datum(selected.history)
       .attr('d', line).attr('fill', 'none')
-      .attr('stroke', '#d66a4f').attr('stroke-width', 3)
+      .attr('stroke', '#17324a').attr('stroke-width', 3)
     chart.selectAll('.selected-end').data([first, last]).join('circle')
       .attr('class', 'selected-end')
       .attr('cx', d => x(d.year)).attr('cy', d => y(d.fertility))
-      .attr('r', 4.5).attr('fill', '#d66a4f')
+      .attr('r', 4.5).attr('fill', '#17324a')
 
     const hitLines = chart.selectAll('.country-hit').data([
       ...countries, { iso3: 'median', name: 'Median', history: median },

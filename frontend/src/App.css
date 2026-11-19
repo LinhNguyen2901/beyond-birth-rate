@@ -118,14 +118,14 @@
 .all-country-summary span { color: #718398; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
 .all-country-summary strong { color: #17324a; font-size: 20px; line-height: 1.2; }
 .all-country-summary .summary-country { min-width: 170px; flex: 1; }
-.all-country-summary .summary-country strong { color: #c3543c; }
+.all-country-summary .summary-country strong { color: #17324a; }
 .all-country-summary small { color: #718398; font-size: 12px; }
 .opening-legend { display: flex; flex-wrap: wrap; gap: 10px 22px; margin-top: 20px; color: #52677b; font-size: 13px; }
 .opening-legend span { display: inline-flex; align-items: center; gap: 7px; }
 .opening-legend i { display: inline-block; width: 22px; border-top: 3px solid; }
 .opening-legend .country-swatch { border-color: #b7c8ce; border-top-width: 1px; }
 .opening-legend .median-swatch { border-color: #1a7774; }
-.opening-legend .selected-swatch { border-color: #d66a4f; }
+.opening-legend .selected-swatch { border-color: #17324a; }
 .all-country-chart-scroll { overflow-x: auto; }
 .all-country-card svg .country-line.is-active { stroke: #476f7b; stroke-width: 2.5; opacity: 1; }
 .all-country-card svg .has-hover .country-line:not(.is-active) { opacity: .015; }

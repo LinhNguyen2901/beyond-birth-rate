@@ -3,9 +3,8 @@ import * as d3 from 'd3'
 import data from '../data/country_year.json'
 import educationData from '../data/education_year.json'
 import { addTooltip } from '../chartTooltip'
-import { countryColors } from '../chartColors'
+import { measureColors } from '../chartColors'
 
-const colors = countryColors
 const education = new Map(educationData.map(d => [`${d.iso3}-${d.year}`, d.education]))
 const year2001 = new Map(data.filter(d => d.year === 2001).map(d => [d.iso3, d]))
 const year2023 = new Map(data.filter(d => d.year === 2023).map(d => [d.iso3, d]))
@@ -121,13 +120,14 @@ export default function CaseComparisonChart() {
           value: measure.key === 'education' ? education.get(`${d.iso3}-${d.year}`) : d[measure.key],
         }))
         chart.append('path').datum(points).attr('class', 'case-line')
-          .attr('fill', 'none').attr('stroke', colors[countryIndex]).attr('stroke-width', 3)
+          .attr('fill', 'none').attr('stroke', measureColors[measure.key]).attr('stroke-width', 3)
+          .attr('stroke-dasharray', countryIndex === 0 ? null : '8 5')
           .attr('d', line)
 
         const marks = chart.selectAll(`.case-point-${countryIndex}`).data(points.filter(d => d.value != null))
           .join('circle').attr('class', `case-point-${countryIndex}`)
           .attr('cx', d => x(d.year)).attr('cy', d => y(d.value))
-          .attr('r', 5).attr('fill', colors[countryIndex]).attr('opacity', 0)
+          .attr('r', 5).attr('fill', measureColors[measure.key]).attr('opacity', 0)
           .attr('tabindex', 0)
           .attr('aria-label', d => `${pair.names[countryIndex]}, ${d.year}, ${measure.title}: ${d.value.toFixed(1)}`)
         marks.on('mouseover.show', function () { d3.select(this).attr('opacity', 1) })
@@ -160,7 +160,7 @@ export default function CaseComparisonChart() {
       </div>
       <div className="peer-legend">
         {pair.names.map((name, index) =>
-          <span key={name}><i style={{ borderColor: colors[index] }} />{name}</span>
+          <span key={name}><i style={{ borderColor: '#17324a', borderTopStyle: index === 0 ? 'solid' : 'dashed' }} />{name} ({index === 0 ? 'solid' : 'dashed'})</span>
         )}
       </div>
       <div className="case-grid" ref={chartsRef}>

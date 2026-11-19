@@ -3,9 +3,8 @@ import * as d3 from 'd3'
 import data from '../data/country_year.json'
 import educationData from '../data/education_year.json'
 import { addTooltip } from '../chartTooltip'
-import { measureColors, countryColors } from '../chartColors'
+import { measureColors, selectionColor } from '../chartColors'
 
-const colors = d3.scaleOrdinal(countryColors).domain([...new Set(data.map(d => d.region))].sort())
 const historyMax = { fertility: 8, mortality: 500, education: 180 }
 
 export default function OverviewChart({ selectedCountry, onCountrySelect }) {
@@ -34,7 +33,7 @@ export default function OverviewChart({ selectedCountry, onCountrySelect }) {
     const dots = chart.selectAll('circle').data(current).join('circle')
       .attr('cx', d => x(d.gdp_pc)).attr('cy', d => y(d.fertility))
       .attr('r', d => d.iso3 === selectedCountry ? 7 : 4)
-      .attr('fill', d => colors(d.region)).attr('opacity', 0.8)
+      .attr('fill', d => d.iso3 === selectedCountry ? selectionColor : measureColors.gdp_pc).attr('opacity', 0.8)
       .attr('tabindex', 0)
       .attr('aria-label', d => `${d.country}: ${d.fertility.toFixed(2)} births per woman, GDP per person $${Math.round(d.gdp_pc)}`)
       .style('cursor', 'pointer')
@@ -151,7 +150,7 @@ export default function OverviewChart({ selectedCountry, onCountrySelect }) {
           </div>
         </div>
       </div>
-      <p className="chart-source">Dot colors show World Bank regions. Select a dot to follow that economy. Source: World Bank WDI.</p>
+      <p className="chart-source">Navy marks the selected economy. Select a dot to follow its history. Source: World Bank WDI.</p>
     </section>
   )
 }
