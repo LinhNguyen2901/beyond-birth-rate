@@ -11,10 +11,10 @@ const fertilityMax = d3.max(data, d => d.fertility)
 const educationMax = d3.max(educationData, d => d.education)
 const historyCountries = new Set(data.map(d => d.iso3))
 
-export default function FertilityVsIndicatorScatterplot({ selectedCountry, onCountrySelect }) {
+export default function FertilityVsIndicatorScatterplot({ selectedCountry, onCountrySelect, initialYear = 2024, initialIndicator = 'gdp_pc' }) {
   const chartRef = useRef(null)
-  const [year, setYear] = useState(2024)
-  const [indicator, setIndicator] = useState('gdp_pc')
+  const [year, setYear] = useState(initialYear)
+  const [indicator, setIndicator] = useState(initialIndicator)
   const [playing, setPlaying] = useState(false)
   const isEducation = indicator === 'education'
   const firstYear = isEducation ? 2001 : 1990

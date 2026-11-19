@@ -15,9 +15,9 @@ const changes = start.map(before => {
   }
 })
 
-export default function CountryChangeChart() {
+export default function CountryChangeChart({ initialIndicator = 'mortality' }) {
   const chartRef = useRef(null)
-  const [indicator, setIndicator] = useState('mortality')
+  const [indicator, setIndicator] = useState(initialIndicator)
 
   useEffect(() => {
     const margin = { top: 20, right: 25, bottom: 70, left: 65 }
