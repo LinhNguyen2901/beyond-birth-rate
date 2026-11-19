@@ -4,6 +4,7 @@ import MedianTrends from './components/MedianTrends'
 import FertilityVsIndicatorScatterplot from './components/FertilityVsIndicatorScatterplot'
 import CountryChangeChart from './components/CountryChangeChart'
 import PeerHistoryChart from './components/PeerHistoryChart'
+import CaseComparisonChart from './components/CaseComparisonChart'
 import ModelComparisonChart from './components/ModelComparisonChart'
 import OverviewChart from './components/OverviewChart'
 import './App.css'
@@ -70,10 +71,11 @@ export default function App() {
           <span className="section-number">05</span>
           <div>
             <h2 id="section-5">Similar beginnings, different journeys</h2>
-            <p>Economies with similar measured starting conditions can still take different paths. Follow the Central African Republic and five peers.</p>
+            <p>Choose one economy to see nearby peers based on three measured starting conditions in 2001. Then compare the fertility paths that followed.</p>
           </div>
         </div>
         <PeerHistoryChart />
+        <CaseComparisonChart />
       </section>
 
       <section className="story-section" aria-labelledby="section-6">
@@ -81,7 +83,7 @@ export default function App() {
           <span className="section-number">06</span>
           <div>
             <h2 id="section-6">Can we predict fertility?</h2>
-            <p>Income, child mortality, and education can improve predictions, but errors remain. These comparisons describe patterns, not causes.</p>
+            <p>How close can a prediction get for economies the model has not seen? Compare a simple guess with models using income, child mortality, and education.</p>
           </div>
         </div>
         <ModelComparisonChart />
