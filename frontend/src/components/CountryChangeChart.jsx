@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import * as d3 from 'd3'
 import data from '../data/country_year.json'
+import educationData from '../data/education_year.json'
 import { addTooltip } from '../chartTooltip'
 import { measureColors } from '../chartColors'
 
@@ -16,9 +17,22 @@ const changes = start.map(before => {
   }
 })
 
+const educationEnd = new Map(educationData.filter(d => d.year === 2023).map(d => [d.iso3, d]))
+const educationChanges = educationData.filter(d => d.year === 2001 && educationEnd.has(d.iso3))
+  .map(before => {
+    const after = educationEnd.get(before.iso3)
+    return {
+      country: before.country,
+      fertility: before.fertility - after.fertility,
+      education: after.education - before.education,
+    }
+  })
+
 export default function CountryChangeChart({ initialIndicator = 'mortality' }) {
   const chartRef = useRef(null)
   const [indicator, setIndicator] = useState(initialIndicator)
+  const points = indicator === 'education' ? educationChanges : changes
+  const period = indicator === 'education' ? '2001–2023' : '1990–2024'
 
   useEffect(() => {
     const margin = { top: 20, right: 25, bottom: 70, left: 65 }
@@ -28,9 +42,9 @@ export default function CountryChangeChart({ initialIndicator = 'mortality' }) {
     svg.selectAll('*').remove()
     const chart = svg.append('g').attr('transform', `translate(${margin.left}, ${margin.top})`)
 
-    const x = d3.scaleLinear().domain(d3.extent(changes, d => d[indicator]))
+    const x = d3.scaleLinear().domain(d3.extent(points, d => d[indicator]))
       .nice().range([0, width])
-    const y = d3.scaleLinear().domain(d3.extent(changes, d => d.fertility))
+    const y = d3.scaleLinear().domain(d3.extent(points, d => d.fertility))
       .nice().range([height, 0])
 
     chart.append('g').attr('class', 'grid')
@@ -39,39 +53,42 @@ export default function CountryChangeChart({ initialIndicator = 'mortality' }) {
       .call(d3.axisBottom(x).ticks(6))
     chart.append('g').call(d3.axisLeft(y).ticks(5))
 
-    const dots = chart.selectAll('circle').data(changes).join('circle')
+    const dots = chart.selectAll('circle').data(points).join('circle')
       .attr('cx', d => x(d[indicator])).attr('cy', d => y(d.fertility))
-      .attr('r', 6).attr('fill', indicator === 'gdp' ? measureColors.gdp_pc : measureColors.mortality).attr('opacity', 0.72)
+      .attr('r', 6).attr('fill', measureColors[indicator === 'gdp' ? 'gdp_pc' : indicator]).attr('opacity', 0.72)
       .attr('tabindex', 0)
       .attr('aria-label', d => `${d.country}: fertility reduction ${d.fertility.toFixed(2)}, ${indicator} change ${d[indicator].toFixed(1)}`)
     addTooltip(dots, chartRef.current, d =>
       `${d.country}\nFertility reduction: ${d.fertility.toFixed(2)} births per woman\n` +
-      `${indicator === 'mortality' ? 'Mortality reduction' : 'GDP growth'}: ${d[indicator].toFixed(1)}${indicator === 'gdp' ? '%' : ' deaths per 1,000'}`
+      (indicator === 'education'
+        ? `Enrollment increase: ${d.education.toFixed(1)} percentage points`
+        : `${indicator === 'mortality' ? 'Mortality reduction' : 'GDP growth'}: ${d[indicator].toFixed(1)}${indicator === 'gdp' ? '%' : ' deaths per 1,000'}`)
     )
 
     chart.append('text').attr('x', width / 2).attr('y', height + 50)
       .attr('text-anchor', 'middle').text(indicator === 'mortality'
         ? 'Under-five mortality reduction (per 1,000 live births)'
-        : 'GDP per person growth (%)')
+        : indicator === 'education' ? 'Female secondary enrollment increase (percentage points)' : 'GDP per person growth (%)')
     chart.append('text').attr('transform', 'rotate(-90)')
       .attr('x', -height / 2).attr('y', -48)
       .attr('text-anchor', 'middle').text('Fertility reduction (births per woman)')
-  }, [indicator])
+  }, [indicator, points])
 
   return (
     <section className="chart-card">
       <h2>Did economies change together?</h2>
-      <p>Each dot compares the same economy in 1990 and 2024.</p>
+      <p>Each dot compares one economy at the start and end of {period}.</p>
       <label>Compare fertility reduction with:{' '}
         <select value={indicator} onChange={e => setIndicator(e.target.value)}>
           <option value="mortality">Child mortality reduction</option>
           <option value="gdp">GDP per person growth</option>
+          <option value="education">Female secondary enrollment increase</option>
         </select>
       </label>
-      <svg ref={chartRef} role="img" aria-label={`1990 to 2024 economy changes: fertility and ${indicator}`} />
+      <svg ref={chartRef} role="img" aria-label={`${period} economy changes: fertility and ${indicator}`} />
       <div className="chart-tooltip" aria-hidden="true" />
       <p className="chart-readout" aria-live="polite">Hover or focus a mark to see its exact values.</p>
-      <p className="chart-source">182 economies, 1990–2024. Endpoint changes are different from the single-year comparison above. Source: World Bank WDI.</p>
+      <p className="chart-source">{points.length} economies, {period}. {indicator === 'education' && 'Separate sample with fertility and enrollment at both endpoints. Gross enrollment can exceed 100%. '}Endpoint changes differ from single-year comparisons. Source: World Bank WDI.</p>
     </section>
   )
 }

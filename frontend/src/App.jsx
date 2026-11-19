@@ -92,7 +92,7 @@ export default function App() {
         <ScrollStory steps={[
           { title: 'Trade a snapshot for a journey.', indicator: 'mortality', text: 'Each dot now compares one economy with itself, from 1990 to 2024. Larger reductions in child mortality tend to accompany larger reductions in fertility.', detail: 'Move right · Larger mortality reduction' },
           { title: 'Income tells a less tidy story.', indicator: 'gdp', text: 'Switch to income growth. The dots are more scattered: a larger rise in income does not consistently go with a larger fertility decline. Comparing changes asks a different question from comparing levels.', detail: 'Move right · Greater GDP growth' },
-          { title: 'Explore the exceptions.', indicator: 'gdp', text: 'Hover over a dot to identify an economy. Switch between the measures to compare its changes. Next, we will look more closely at countries with similar measured conditions.', detail: 'Your turn · Use either comparison' },
+          { title: 'What changed in education?', indicator: 'education', text: 'Compare gains in female secondary enrollment with fertility reductions. This view uses economies with data at both endpoints of 2001–2023. Hover over a dot to explore its changes.', detail: '2001–2023 · Separate education sample' },
         ]}>
           {step => <CountryChangeChart initialIndicator={step.indicator} />}
         </ScrollStory>
