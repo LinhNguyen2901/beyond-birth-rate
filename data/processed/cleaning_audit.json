@@ -1,0 +1,13 @@
+{
+  "raw_rows": 70224,
+  "empty_iso3_rows": 1320,
+  "duplicate_keys": 0,
+  "aggregate_rows": 11616,
+  "country_rows": 57288,
+  "economies": 217,
+  "nonpositive_gdp": 0,
+  "education_above_100": 1104,
+  "observation_status_counts": {
+    "": 70224
+  }
+}
