@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import * as d3 from 'd3'
 import data from '../data/country_year.json'
 import { addTooltip } from '../chartTooltip'
+import { measureColors } from '../chartColors'
 
 const start = data.filter(d => d.year === 1990)
 const end = new Map(data.filter(d => d.year === 2024).map(d => [d.iso3, d]))
@@ -40,7 +41,7 @@ export default function CountryChangeChart({ initialIndicator = 'mortality' }) {
 
     const dots = chart.selectAll('circle').data(changes).join('circle')
       .attr('cx', d => x(d[indicator])).attr('cy', d => y(d.fertility))
-      .attr('r', 6).attr('fill', '#6878b7').attr('opacity', 0.72)
+      .attr('r', 6).attr('fill', indicator === 'gdp' ? measureColors.gdp_pc : measureColors.mortality).attr('opacity', 0.72)
       .attr('tabindex', 0)
       .attr('aria-label', d => `${d.country}: fertility reduction ${d.fertility.toFixed(2)}, ${indicator} change ${d[indicator].toFixed(1)}`)
     addTooltip(dots, chartRef.current, d =>

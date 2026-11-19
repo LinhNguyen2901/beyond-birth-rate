@@ -3,16 +3,17 @@ import * as d3 from 'd3'
 import data from '../data/core_trends.json'
 import educationData from '../data/education_year.json'
 import { addTooltip } from '../chartTooltip'
+import { measureColors } from '../chartColors'
 
 const educationTrend = d3.rollups(educationData, rows => d3.median(rows, d => d.education), d => d.year)
   .map(([year, education]) => ({ year, education }))
   .sort((a, b) => a.year - b.year)
 
 const measures = [
-  { key: 'fertility', title: 'Fertility', unit: 'Births per woman', color: '#1a7774' },
-  { key: 'mortality', title: 'Under-five mortality', unit: 'Deaths per 1,000 live births', color: '#d66a4f' },
-  { key: 'gdp_pc', title: 'GDP per person', unit: 'Constant 2015 US$', color: '#6878b7' },
-  { key: 'education', title: 'Female secondary enrollment', unit: 'Gross enrollment (%)', color: '#a4659b' },
+  { key: 'fertility', title: 'Fertility', unit: 'Births per woman', color: measureColors.fertility },
+  { key: 'mortality', title: 'Under-five mortality', unit: 'Deaths per 1,000 live births', color: measureColors.mortality },
+  { key: 'gdp_pc', title: 'GDP per person', unit: 'Constant 2015 US$', color: measureColors.gdp_pc },
+  { key: 'education', title: 'Female secondary enrollment', unit: 'Gross enrollment (%)', color: measureColors.education },
 ]
 
 function TrendChart({ measure }) {

@@ -3,6 +3,7 @@ import * as d3 from 'd3'
 import data from '../data/country_year.json'
 import educationData from '../data/education_year.json'
 import { addTooltip } from '../chartTooltip'
+import { measureColors } from '../chartColors'
 
 // Use all years for the axis ranges so points stay comparable as the year changes.
 const gdpRange = d3.extent(data, d => d.gdp_pc)
@@ -69,7 +70,7 @@ export default function FertilityVsIndicatorScatterplot({ selectedCountry, onCou
       .attr('cx', d => xScale(d[indicator]))
       .attr('cy', d => yScale(d.fertility))
       .attr('r', d => d.iso3 === selectedCountry ? 8 : 6)
-      .attr('fill', d => d.iso3 === selectedCountry ? '#d66a4f' : '#1a7774')
+      .attr('fill', d => d.iso3 === selectedCountry ? '#17324a' : measureColors[indicator])
       .attr('opacity', 0.75)
       .attr('tabindex', 0)
       .attr('aria-label', d => `${d.country}: ${d.fertility.toFixed(2)} births per woman${historyCountries.has(d.iso3) ? '' : '; history unavailable'}`)

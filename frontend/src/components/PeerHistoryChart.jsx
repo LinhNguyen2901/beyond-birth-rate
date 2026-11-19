@@ -3,8 +3,9 @@ import * as d3 from 'd3'
 import data from '../data/country_year.json'
 import educationData from '../data/education_year.json'
 import { addTooltip } from '../chartTooltip'
+import { countryColors } from '../chartColors'
 
-const colors = ['#b54132', '#345f9d', '#367a5b', '#8a5c9e', '#b57b30', '#586674']
+const colors = countryColors
 const education2001 = new Map(educationData.filter(d => d.year === 2001).map(d => [d.iso3, d.education]))
 const choices = data.filter(d => d.year === 2001 && education2001.has(d.iso3))
   .map(d => ({ ...d, education: education2001.get(d.iso3) }))

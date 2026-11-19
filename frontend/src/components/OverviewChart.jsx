@@ -3,8 +3,9 @@ import * as d3 from 'd3'
 import data from '../data/country_year.json'
 import educationData from '../data/education_year.json'
 import { addTooltip } from '../chartTooltip'
+import { measureColors, countryColors } from '../chartColors'
 
-const colors = d3.scaleOrdinal(d3.schemeTableau10)
+const colors = d3.scaleOrdinal(countryColors).domain([...new Set(data.map(d => d.region))].sort())
 const historyMax = { fertility: 8, mortality: 500, education: 180 }
 
 export default function OverviewChart({ selectedCountry, onCountrySelect }) {
@@ -70,13 +71,13 @@ export default function OverviewChart({ selectedCountry, onCountrySelect }) {
           ? [2001, 2010, 2023] : [1990, 2000, 2010, 2024]).tickFormat(d3.format('d')))
       chart.append('g').call(d3.axisLeft(y).ticks(3).tickFormat(key === 'gdp_pc' ? d3.format('~s') : d3.format('~g')))
       if (rows.length) {
-        chart.append('path').datum(rows).attr('fill', 'none').attr('stroke', '#e69500')
+        chart.append('path').datum(rows).attr('fill', 'none').attr('stroke', measureColors[key])
           .attr('stroke-width', 2.5)
           .attr('d', d3.line().x(d => x(d.year)).y(d => y(d[key])))
         chart.selectAll('circle').data([rows[0], rows[rows.length - 1]]).join('circle')
           .attr('cx', d => x(d.year)).attr('cy', d => y(d[key]))
-          .attr('r', 3.5).attr('fill', '#e69500')
-        const focus = chart.append('circle').attr('r', 5).attr('fill', '#e69500').style('display', 'none')
+          .attr('r', 3.5).attr('fill', measureColors[key])
+        const focus = chart.append('circle').attr('r', 5).attr('fill', measureColors[key]).style('display', 'none')
         const step = 240 / (key === 'education' ? 22 : 34)
         const hits = chart.selectAll('.trend-hit').data(rows).join('rect')
           .attr('class', 'trend-hit')
