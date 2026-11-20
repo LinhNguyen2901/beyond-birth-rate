@@ -23,14 +23,15 @@ export default function App() {
         <p>Explore how fertility changed alongside income, child survival, and education.</p>
         <p className="interaction-hint">Hover or focus charts for exact values.</p>
         <a className="story-start" href="#section-1">Follow the story <span aria-hidden="true">↓</span></a>
-        <div className="intro-facts"><span><strong>182</strong> economies</span><span><strong>6</strong> chapters</span></div>
+        <div className="intro-facts"><span><strong>182</strong> countries</span><span><strong>6</strong> chapters</span></div>
       </header>
 
       <section className="story-section" aria-labelledby="section-1">
         <div className="section-intro">
           <span className="section-number">01</span>
           <div>
-            <h2 id="section-1">A world of changing paths</h2>
+            <h2 id="section-1">How the world has changed</h2>
+            <p>Across countries, fertility and child mortality fell while income and enrollment rose.</p>
           </div>
         </div>
         <MedianTrends />
@@ -40,13 +41,14 @@ export default function App() {
         <div className="section-intro">
           <span className="section-number">02</span>
           <div>
-            <h2 id="section-2">What changes alongside fertility?</h2>
+            <h2 id="section-2">How do countries compare?</h2>
+            <p>Now look at fertility and living conditions in the same year.</p>
           </div>
         </div>
         <ScrollStory steps={[
-          { title: 'Start with income.', indicator: 'gdp_pc', year: 2024, text: 'Higher-income economies tend to have lower fertility, though the dots spread widely.' },
-          { title: 'Look at child survival.', indicator: 'mortality', year: 2024, text: 'More under-five deaths generally appear alongside higher fertility.' },
-          { title: 'Education adds another view.', indicator: 'education', year: 2023, text: 'Higher female secondary enrollment often appears alongside lower fertility. Education has a smaller data sample.' },
+          { title: 'Look at income', indicator: 'gdp_pc', year: 2024, text: 'Higher-income countries usually have lower fertility, but there are plenty of exceptions.' },
+          { title: 'Look at child mortality', indicator: 'mortality', year: 2024, text: 'Countries with more deaths among young children usually have higher fertility.' },
+          { title: 'Look at education', indicator: 'education', year: 2023, text: 'Higher female secondary enrollment often goes with lower fertility. These data cover fewer countries.' },
         ]}>
           {(step, onExplore) => <FertilityVsIndicatorScatterplot selectedCountry={selectedCountry} onCountrySelect={setSelectedCountry} initialYear={step.year} initialIndicator={step.indicator} onExplore={onExplore} />}
         </ScrollStory>
@@ -56,8 +58,8 @@ export default function App() {
         <div className="section-intro">
           <span className="section-number">03</span>
           <div>
-            <h2 id="section-3">Follow one dot</h2>
-            <p>Select a dot to follow an economy over time.</p>
+            <h2 id="section-3">How has one country changed?</h2>
+            <p>Pick a dot to follow its history.</p>
           </div>
         </div>
         <OverviewChart selectedCountry={selectedCountry} onCountrySelect={setSelectedCountry} />
@@ -67,13 +69,14 @@ export default function App() {
         <div className="section-intro">
           <span className="section-number">04</span>
           <div>
-            <h2 id="section-4">Did they change together?</h2>
+            <h2 id="section-4">Did these changes happen together?</h2>
+            <p>Now compare how much each country changed.</p>
           </div>
         </div>
         <ScrollStory steps={[
-          { title: 'Income growth is a weak guide.', indicator: 'gdp', text: 'Bigger income gains did not reliably mean bigger fertility declines.' },
-          { title: 'Falling mortality, different fertility paths.', indicator: 'mortality', text: 'Bigger declines in child mortality only weakly tracked fertility declines.' },
-          { title: 'Education gains show a clearer pattern.', indicator: 'education', text: 'Bigger enrollment gains often accompanied bigger fertility declines, with many exceptions.' },
+          { title: 'Does income growth matter?', indicator: 'gdp', text: 'Bigger income gains did not consistently come with bigger fertility declines.' },
+          { title: 'What about child mortality?', indicator: 'mortality', text: 'Even where child mortality fell sharply, fertility did not always fall as much.' },
+          { title: 'Education shows a clearer pattern', indicator: 'education', text: 'Bigger gains in female secondary enrollment often went with bigger fertility declines, though there are exceptions.' },
         ]}>
           {(step, onExplore) => <CountryChangeChart initialIndicator={step.indicator} onExplore={onExplore} />}
         </ScrollStory>
@@ -83,17 +86,17 @@ export default function App() {
         <div className="section-intro">
           <span className="section-number">05</span>
           <div>
-            <h2 id="section-5">Similar beginnings, different journeys</h2>
-            <p>Choose an economy to follow its 2001 peers.</p>
+            <h2 id="section-5">What if countries start out alike?</h2>
+            <p>Choose a country and see what happened to its closest peers since 2001.</p>
           </div>
         </div>
         <PeerHistoryChart />
         <div className="case-bridge">
-          <h3>Similar conditions at both ends. Different fertility paths.</h3>
-          <p>These pairs also had similar measured conditions in 2023, yet their fertility gaps grew.</p>
+          <h3>Fertility didn't follow</h3>
+          <p>These pairs started alike, and their income, child mortality, and enrollment changed by similar amounts from 2001 to 2023. Their fertility rates moved apart.</p>
         </div>
         <details className="case-study">
-          <summary><span><strong>Explore a surprising pair</strong></span><span aria-hidden="true" className="case-arrow">⌄</span></summary>
+          <summary><span><strong>Explore an unusual pair</strong></span><span aria-hidden="true" className="case-arrow">⌄</span></summary>
           <CaseComparisonChart />
         </details>
       </section>
@@ -102,8 +105,8 @@ export default function App() {
         <div className="section-intro">
           <span className="section-number">06</span>
           <div>
-            <h2 id="section-6">Can we predict fertility?</h2>
-            <p>How close can we get for an economy the model has not seen?</p>
+            <h2 id="section-6">How well can we predict fertility?</h2>
+            <p>We tested the predictions on countries the model had never seen.</p>
           </div>
         </div>
         <ModelComparisonChart />

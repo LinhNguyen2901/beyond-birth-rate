@@ -103,7 +103,7 @@ export default function ModelComparisonChart() {
               <small>Births per woman off, on average</small>
             </div>
           </div>
-          <p className="model-note">Leaving out income changes little; leaving out child mortality changes the most. These results describe predictions, not causes.</p>
+          <p className="model-note">Without income, the error barely changes. Without child mortality, it rises the most. That does not tell us what causes fertility to change.</p>
         </div>
         <div className="model-plot">
           <h3>What if we leave one measure out?</h3>
@@ -113,7 +113,7 @@ export default function ModelComparisonChart() {
           <p className="chart-readout" aria-live="polite">Hover or focus a mark to see its exact values.</p>
         </div>
       </div>
-      <p className="chart-source">2001–2023 complete rows. Average absolute error across five rounds, each holding out entire economies. Source: World Bank WDI.</p>
+      <p className="chart-source">2001–2023 complete rows. Average absolute error across five rounds, each holding out entire countries. Source: World Bank WDI.</p>
     </section>
   )
 }

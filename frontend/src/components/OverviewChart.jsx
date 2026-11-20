@@ -109,18 +109,18 @@ export default function OverviewChart({ selectedCountry, onCountrySelect }) {
     <section className="chart-card overview-card">
       <div className="overview-grid">
         <div>
-          <h2>A &nbsp; Across economies</h2>
-          <p>{year} · 182 economies · one dot per economy</p>
+          <h2>A &nbsp; Across countries</h2>
+          <p>{year} · 182 countries · one dot per country</p>
           <label>Year: {year} <input type="range" min="1990" max="2024" value={year}
             onChange={e => setYear(Number(e.target.value))} /></label>
-          <svg ref={scatterRef} role="img" aria-label={`${year} fertility versus GDP per person across economies`} />
+          <svg ref={scatterRef} role="img" aria-label={`${year} fertility versus GDP per person across countries`} />
           <div className="chart-tooltip" aria-hidden="true" />
           <p className="chart-readout" aria-live="polite">Hover or focus a mark to see its exact values.</p>
         </div>
         <div>
           <h2>B &nbsp; Following {country?.country}</h2>
           <p>1990–2024</p>
-          <p className="history-note">Each measure keeps the same axes when you choose another economy.</p>
+          <p className="history-note">Each measure keeps the same axes when you choose another country.</p>
           <div className="overview-history-grid">
             <div>
               <h3>Fertility</h3>
@@ -150,7 +150,7 @@ export default function OverviewChart({ selectedCountry, onCountrySelect }) {
           </div>
         </div>
       </div>
-      <p className="chart-source">Navy marks the selected economy. Source: World Bank WDI.</p>
+      <p className="chart-source">Navy marks the selected country. Source: World Bank WDI.</p>
     </section>
   )
 }

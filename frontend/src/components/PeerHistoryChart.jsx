@@ -100,12 +100,12 @@ export default function PeerHistoryChart() {
 
   return (
     <section className="chart-card">
-      <h2>Compare fertility paths</h2>
-      <p>Up to five similar 2001 peers from the same region appear automatically.</p>
+      <h2>Fertility since 2001</h2>
+      <p>The chart adds up to five countries from the same region that were most similar in 2001.</p>
       <div className="peer-main">
         <div className="peer-plot">
           <div className="peer-controls">
-            <label style={{ borderLeftColor: colors[0] }}>Choose an economy
+            <label style={{ borderLeftColor: colors[0] }}>Choose a country
               <select value={selectedCountry} onChange={e => setSelectedCountry(e.target.value)}>
                 {choices.map(d => <option key={d.iso3} value={d.iso3}>{d.country}</option>)}
               </select>
@@ -130,7 +130,7 @@ export default function PeerHistoryChart() {
             <p className="peer-missing-note">— means no 2023 enrollment data.</p>}
         </div>
       </div>
-      <p className="chart-source">Peers are closest on scaled 2001 log income, under-five mortality, and female secondary enrollment. 124 economies qualify. Similar values do not mean identical circumstances. Source: World Bank WDI.</p>
+      <p className="chart-source">Peers are closest on scaled 2001 log income, under-five mortality, and female secondary enrollment. 124 countries qualify. These measures don't capture everything about a country. Source: World Bank WDI.</p>
     </section>
   )
 }

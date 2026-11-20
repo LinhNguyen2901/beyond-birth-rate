@@ -128,8 +128,8 @@ Under-five mortality: ${d.mortality.toFixed(1)} per 1,000`
   return (
     <section className="chart-card">
       <div className="chart-top">
-      <h2>How do economies compare?</h2>
-      <p>Each dot is one economy. Select one to follow its history.</p>
+      <h2>Fertility and {measureNames[indicator]}</h2>
+      <p>Each dot is one country. Select one to follow its history.</p>
 
       <label>
         Year: {year}{' '}
@@ -172,8 +172,8 @@ Under-five mortality: ${d.mortality.toFixed(1)} per 1,000`
       <p className="selection-note">Selected: <strong>{data.find(d => d.iso3 === selectedCountry)?.country}</strong>{!points.some(d => d.iso3 === selectedCountry) && ' (not in this year’s sample)'}</p>
       <p className="chart-source">
         {isEducation
-          ? `${points.length} economies in ${year}. Separate 2001–2023 available-data sample; gross enrollment can exceed 100%. Source: World Bank WDI.`
-          : '182 economies in each year, 1990–2024. Source: World Bank WDI.'}
+          ? `${points.length} countries in ${year}. Separate 2001–2023 available-data sample; gross enrollment can exceed 100%. Source: World Bank WDI.`
+          : '182 countries in each year, 1990–2024. Source: World Bank WDI.'}
       </p>
     </section>
   )

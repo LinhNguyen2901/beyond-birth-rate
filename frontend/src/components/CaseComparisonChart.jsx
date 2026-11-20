@@ -156,8 +156,8 @@ export default function CaseComparisonChart() {
 
   return (
     <section className="chart-card case-card">
-      <h2>Compare the pairs</h2>
-      <p>Selected for widening fertility gaps. Illustrative examples, not typical outcomes.</p>
+      <h2>How these pairs changed</h2>
+      <p>We chose these pairs because their fertility rates grew apart. They are unusual examples, not a typical outcome.</p>
       <label>Choose a pair
         <select value={caseIndex} onChange={e => setCaseIndex(Number(e.target.value))}>
           {shortlist.map((item, index) =>
@@ -185,7 +185,7 @@ export default function CaseComparisonChart() {
           </div>
         )}
       </div>
-      <p className="chart-source">From {rows.length} eligible economies, {shortlist.length} pairs met these rules: scaled distance ≤ 0.35 across income, mortality, and education in 2001 and 2023; starting fertility gap ≤ 0.5; gap growth ≥ 0.5. Fertility was excluded from the similarity score. Axes stay fixed; GDP uses a log scale. Source: World Bank WDI.</p>
+      <p className="chart-source">From {rows.length} eligible countries, {shortlist.length} pairs met these rules: scaled distance ≤ 0.35 across income, mortality, and education in 2001 and 2023; starting fertility gap ≤ 0.5; gap growth ≥ 0.5. Fertility was excluded from the similarity score. Axes stay fixed; GDP uses a log scale. Source: World Bank WDI.</p>
     </section>
   )
 }

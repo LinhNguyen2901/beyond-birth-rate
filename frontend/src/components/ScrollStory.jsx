@@ -43,8 +43,8 @@ export default function ScrollStory({ steps, children }) {
               transition={{ duration: reducedMotion ? 0 : 0.45 }}>
               <span className="step-count">{String(index + 1).padStart(2, '0')} / {String(steps.length).padStart(2, '0')}</span>
               {exploring && (wide || exploring.step === index) ? <>
-                <h3>Explore your own view</h3>
-                <p>Showing <strong>{exploring.label}</strong>. Resume the story when ready.</p>
+                <h3>Your selection</h3>
+                <p>You're viewing <strong>{exploring.label}</strong>. Resume the story to return to the example.</p>
                 {!wide && <button className="resume-story" type="button" onClick={resumeStory}>Resume this story step</button>}
               </> : <>
                 <h3>{step.title}</h3>
