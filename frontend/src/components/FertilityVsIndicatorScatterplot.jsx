@@ -114,7 +114,7 @@ Under-five mortality: ${d.mortality.toFixed(1)} per 1,000`
   return (
     <section className="chart-card">
       <h2>How do economies compare?</h2>
-      <p>Each dot is one economy in the selected year. The axes stay fixed as you change years. Select a dot from the main sample to follow its history.</p>
+      <p>Each dot is one economy. Select one to follow its history.</p>
 
       <label>
         Year: {year}{' '}
@@ -138,7 +138,6 @@ Under-five mortality: ${d.mortality.toFixed(1)} per 1,000`
           <option value="education">Female secondary enrollment</option>
         </select>
       </label>
-      {isEducation && <p className="coverage-note">{points.length} economies in {year} · separate education sample, 2001–2023</p>}
 
       <button type="button" onClick={() => { onExplore?.(measureNames[indicator]); setPlaying(value => !value) }}>
         {playing ? 'Pause years' : 'Play years'}

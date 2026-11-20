@@ -44,12 +44,11 @@ export default function ScrollStory({ steps, children }) {
               <span className="step-count">{String(index + 1).padStart(2, '0')} / {String(steps.length).padStart(2, '0')}</span>
               {exploring && (wide || exploring.step === index) ? <>
                 <h3>Explore your own view</h3>
-                <p>You chose <strong>{exploring.label}</strong>. Keep using the chart controls; scrolling will not replace your choice.</p>
+                <p>Showing <strong>{exploring.label}</strong>. Resume the story when ready.</p>
                 {!wide && <button className="resume-story" type="button" onClick={resumeStory}>Resume this story step</button>}
               </> : <>
                 <h3>{step.title}</h3>
                 <p>{step.text}</p>
-                <span className="step-detail">{step.detail}</span>
               </>}
             </motion.div>
             {!wide && <motion.div key={`${index}-${guideVersion}`} initial={reducedMotion ? false : { opacity: 0, y: 20 }}
@@ -77,7 +76,6 @@ export default function ScrollStory({ steps, children }) {
           animate={{ opacity: 1, x: 0 }} transition={{ duration: reducedMotion ? 0 : 0.45 }}>
           {children(steps[active], label => setExploring({ step: active, label }))}
         </motion.div>
-        <p className="story-stage-hint">{exploring ? 'Use Resume story to return to the guided example.' : 'Change a control to explore freely.'}</p>
       </div>}
     </div>
   )

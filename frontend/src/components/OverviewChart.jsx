@@ -119,7 +119,7 @@ export default function OverviewChart({ selectedCountry, onCountrySelect }) {
         </div>
         <div>
           <h2>B &nbsp; Following {country?.country}</h2>
-          <p>1990–2024 main sample · 35 annual observations</p>
+          <p>1990–2024</p>
           <p className="history-note">Each measure keeps the same axes when you choose another economy.</p>
           <div className="overview-history-grid">
             <div>
@@ -150,7 +150,7 @@ export default function OverviewChart({ selectedCountry, onCountrySelect }) {
           </div>
         </div>
       </div>
-      <p className="chart-source">Navy marks the selected economy. Select a dot to follow its history. Source: World Bank WDI.</p>
+      <p className="chart-source">Navy marks the selected economy. Source: World Bank WDI.</p>
     </section>
   )
 }

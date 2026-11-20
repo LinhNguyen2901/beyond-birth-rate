@@ -88,15 +88,14 @@ export default function ModelComparisonChart() {
 
   return (
     <section className="chart-card model-card">
-      <h2>How close are the predictions?</h2>
-      <p>Imagine predicting fertility for an economy the model has never seen. Each bar shows how far its predictions were from the actual birth rate, on average. <strong>Shorter bars are better.</strong></p>
+      <p>Bars show average prediction error in births per woman. <strong>Shorter is better.</strong></p>
       <div className="model-main">
         <div className="model-explainer">
           <div className="model-takeaway">
             <div>
               <span>The main result</span>
               <strong>{improvement}% less error</strong>
-              <p>Using income, child mortality, and education together roughly halves the average miss compared with guessing the median fertility rate.</p>
+              <p>Income, mortality, and education together roughly halve the average miss.</p>
             </div>
             <div className="model-before-after">
               <span>Median guess <strong>{baseline.mae.toFixed(2)}</strong></span>
@@ -104,17 +103,17 @@ export default function ModelComparisonChart() {
               <small>Births per woman off, on average</small>
             </div>
           </div>
-          <p className="model-note">Leaving out income barely changes the error here. Leaving out child mortality increases it the most. This describes this model's predictions; it does not tell us what causes fertility to change.</p>
+          <p className="model-note">Leaving out income changes little; leaving out child mortality changes the most. These results describe predictions, not causes.</p>
         </div>
         <div className="model-plot">
           <h3>What if we leave one measure out?</h3>
-          <p>The bottom three bars use the color of the measure left out. Compare each with the navy bar to see how the error changes.</p>
+          <p>The bottom bars use the color of the measure left out. Compare them with the navy bar.</p>
           <svg ref={chartRef} role="img" aria-label="Model errors for baseline and indicator combinations" />
           <div className="chart-tooltip" aria-hidden="true" />
           <p className="chart-readout" aria-live="polite">Hover or focus a mark to see its exact values.</p>
         </div>
       </div>
-      <p className="chart-source">2001–2023 rows with all four measures available. Error is the average absolute difference between predicted and actual births per woman. Five evaluation rounds each hold out entire economies. Source: World Bank WDI.</p>
+      <p className="chart-source">2001–2023 complete rows. Average absolute error across five rounds, each holding out entire economies. Source: World Bank WDI.</p>
     </section>
   )
 }

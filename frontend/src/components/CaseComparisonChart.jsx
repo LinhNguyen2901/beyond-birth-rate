@@ -156,8 +156,8 @@ export default function CaseComparisonChart() {
 
   return (
     <section className="chart-card case-card">
-      <h2>Similar on paper, different fertility paths</h2>
-      <p>These pairs were selected because their fertility gaps widened. They are interesting contrasts, not typical outcomes. Income, mortality, and education were used to find similar pairs; fertility was compared afterward.</p>
+      <h2>Compare the pairs</h2>
+      <p>Selected for widening fertility gaps. Illustrative examples, not typical outcomes.</p>
       <label>Choose a pair
         <select value={caseIndex} onChange={e => setCaseIndex(Number(e.target.value))}>
           {shortlist.map((item, index) =>
@@ -185,7 +185,7 @@ export default function CaseComparisonChart() {
           </div>
         )}
       </div>
-      <p className="chart-source">From {rows.length} economies with complete 2001 and 2023 values, these {shortlist.length} pairs meet the comparison rules. The six development values are scaled; pairs must have distance ≤ 0.35, a 2001 fertility gap ≤ 0.5, and gap growth ≥ 0.5 births per woman. Fertility is not part of the similarity score. Education can have missing years between the endpoints. Each panel keeps the same axes across cases; GDP uses a log scale. Source: World Bank WDI.</p>
+      <p className="chart-source">From {rows.length} eligible economies, {shortlist.length} pairs met these rules: scaled distance ≤ 0.35 across income, mortality, and education in 2001 and 2023; starting fertility gap ≤ 0.5; gap growth ≥ 0.5. Fertility was excluded from the similarity score. Axes stay fixed; GDP uses a log scale. Source: World Bank WDI.</p>
     </section>
   )
 }

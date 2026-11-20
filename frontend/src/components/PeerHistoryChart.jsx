@@ -101,7 +101,7 @@ export default function PeerHistoryChart() {
   return (
     <section className="chart-card">
       <h2>Compare fertility paths</h2>
-      <p>Choose one economy. Up to five economies from the same region with the closest measured starting conditions in 2001 appear automatically.</p>
+      <p>Up to five similar 2001 peers from the same region appear automatically.</p>
       <div className="peer-main">
         <div className="peer-plot">
           <div className="peer-controls">
@@ -130,7 +130,7 @@ export default function PeerHistoryChart() {
             <p className="peer-missing-note">— means no 2023 enrollment data.</p>}
         </div>
       </div>
-      <p className="chart-source">Peers share the chosen economy's World Bank region and are closest on 2001 log GDP per person, under-five mortality, and female secondary enrollment after scaling each measure. Choices: 124 economies with all three measures in 2001. Fertility paths: 2001–2023 main sample. Similar measured values do not imply identical circumstances. Source: World Bank WDI.</p>
+      <p className="chart-source">Peers are closest on scaled 2001 log income, under-five mortality, and female secondary enrollment. 124 economies qualify. Similar values do not mean identical circumstances. Source: World Bank WDI.</p>
     </section>
   )
 }

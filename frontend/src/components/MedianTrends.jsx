@@ -103,8 +103,6 @@ function TrendChart({ measure }) {
 export default function MedianTrends() {
   return (
     <div className="median-overview">
-      <h2>Four measures. A changing world.</h2>
-      <p>Economy medians · Hover for yearly values.</p>
       <div className="median-grid">{measures.map(measure => <TrendChart key={measure.key} measure={measure} />)}</div>
       <p className="median-source">Main sample: 182 economies, 1990–2024. Education: available data, 2001–2023; coverage varies and gross enrollment can exceed 100%. Medians weight economies equally. Source: World Bank WDI.</p>
     </div>
