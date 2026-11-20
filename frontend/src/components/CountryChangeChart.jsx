@@ -17,6 +17,9 @@ const changes = start.map(before => {
   }
 })
 
+const incomeLimit = 500
+const incomeOutliers = changes.filter(d => d.gdp > incomeLimit)
+
 const educationEnd = new Map(educationData.filter(d => d.year === 2023).map(d => [d.iso3, d]))
 const educationChanges = educationData.filter(d => d.year === 2001 && educationEnd.has(d.iso3))
   .map(before => {
@@ -31,6 +34,7 @@ const educationChanges = educationData.filter(d => d.year === 2001 && educationE
 export default function CountryChangeChart({ initialIndicator = 'gdp', onExplore }) {
   const chartRef = useRef(null)
   const [indicator, setIndicator] = useState(initialIndicator)
+  const [showAllIncome, setShowAllIncome] = useState(false)
   const [chartSize, setChartSize] = useState({ width: 700, height: 340 })
   const points = indicator === 'education' ? educationChanges : changes
   const period = indicator === 'education' ? '2001–2023' : '1990–2024'
@@ -55,7 +59,12 @@ export default function CountryChangeChart({ initialIndicator = 'gdp', onExplore
     const svg = d3.select(chartRef.current).attr('viewBox', `0 0 ${chartSize.width} ${chartSize.height}`)
     svg.selectAll('*').remove()
     const chart = svg.append('g').attr('transform', `translate(${margin.left}, ${margin.top})`)
-    const x = d3.scaleLinear().domain([Math.min(0, d3.min(points, d => d[indicator])), Math.max(0, d3.max(points, d => d[indicator]))]).nice().range([0, width])
+    const focusIncome = indicator === 'gdp' && !showAllIncome
+    const visiblePoints = focusIncome ? points.filter(d => d.gdp <= incomeLimit) : points
+    const x = d3.scaleLinear().domain(focusIncome
+      ? [-100, incomeLimit]
+      : [Math.min(0, d3.min(points, d => d[indicator])), Math.max(0, d3.max(points, d => d[indicator]))])
+      .nice().range([0, width])
     const y = d3.scaleLinear().domain([Math.min(0, d3.min(points, d => d.fertility)), Math.max(0, d3.max(points, d => d.fertility))]).nice().range([height, 0])
     const signed = value => value > 0 ? `+${d3.format(',.0f')(value)}` : d3.format(',.0f')(value)
     chart.append('rect')
@@ -72,7 +81,7 @@ export default function CountryChangeChart({ initialIndicator = 'gdp', onExplore
       .attr('stroke', '#8297a8').attr('stroke-dasharray', '4 4')
     chart.append('line').attr('x1', x(0)).attr('x2', x(0)).attr('y1', 0).attr('y2', height)
       .attr('stroke', '#8297a8').attr('stroke-dasharray', '4 4')
-    const dots = chart.selectAll('circle').data(points).join('circle')
+    const dots = chart.selectAll('circle').data(visiblePoints).join('circle')
       .attr('cx', d => x(d[indicator])).attr('cy', d => y(d.fertility))
       .attr('r', 6).attr('fill', measureColors[indicator === 'gdp' ? 'gdp_pc' : indicator]).attr('opacity', 0.72)
       .attr('tabindex', 0)
@@ -90,7 +99,7 @@ export default function CountryChangeChart({ initialIndicator = 'gdp', onExplore
     chart.append('text').attr('transform', 'rotate(-90)')
       .attr('x', -height / 2).attr('y', -48)
       .attr('text-anchor', 'middle').text('Fertility change (%)')
-  }, [indicator, points, chartSize])
+  }, [indicator, points, chartSize, showAllIncome])
 
   return (
     <section className="chart-card">
@@ -107,8 +116,23 @@ export default function CountryChangeChart({ initialIndicator = 'gdp', onExplore
           <option value="education">Female enrollment change (percentage points)</option>
         </select>
       </label>
+      {indicator === 'gdp' && <div className="change-range">
+        <div role="group" aria-label="Income change range">
+          <button type="button" aria-pressed={!showAllIncome} onClick={() => {
+            setShowAllIncome(false)
+            onExplore?.('GDP per person change (%)')
+          }}>Main cluster</button>
+          <button type="button" aria-pressed={showAllIncome} onClick={() => {
+            setShowAllIncome(true)
+            onExplore?.('GDP per person change (%)')
+          }}>All countries</button>
+        </div>
+        <p role="status">{showAllIncome
+          ? `All ${points.length} countries shown.`
+          : `${points.length - incomeOutliers.length} of ${points.length} shown · ${incomeOutliers.length} countries above +${incomeLimit}% are outside this view.`}</p>
+      </div>}
       </div>
-      <svg ref={chartRef} role="img" aria-label={`${period} country changes: fertility and ${indicator}`} />
+      <svg ref={chartRef} role="img" aria-label={`${period} country changes: fertility and ${indicator}${indicator === 'gdp' && !showAllIncome ? ', income range minus 100 to plus 500 percent' : ', all countries'}`} />
       <div className="chart-tooltip" aria-hidden="true" />
       <p className="chart-readout" aria-live="polite">Hover or focus a mark to see its exact values.</p>
       <p className="chart-source">{points.length} countries, {period}. Percent change = (end − start) / start × 100. {indicator === 'education' && 'Enrollment uses end − start in percentage points, with a separate sample available at both endpoints. '}These comparisons do not establish cause. Source: World Bank WDI.</p>

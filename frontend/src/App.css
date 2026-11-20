@@ -106,6 +106,13 @@
 .chart-card .trend-values { margin-top: 12px; color: #314b60; font-size: 15px; }
 .chart-card .trend-values strong { color: #17324a; font-size: 18px; }
 .chart-card .selection-note { margin-top: 10px; color: #314b60; font-size: 14px; }
+.change-range { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 12px; margin-top: 12px; }
+.change-range > div { display: inline-flex; border: 1px solid #bdccd8; border-radius: 8px; overflow: hidden; }
+.chart-card .change-range button { margin: 0; padding: 7px 11px; border: 0; border-radius: 0; background: #fff; color: #314b60; font-size: 12px; }
+.chart-card .change-range button:hover { background: #edf3f7; }
+.chart-card .change-range button[aria-pressed='true'] { background: #17324a; color: #fff; }
+.chart-card .change-range button:focus-visible { outline-offset: -3px; }
+.chart-card .change-range p { color: #52677b; font-size: 12px; }
 .selection-handoff { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px 16px; }
 .selection-handoff a { color: #1a7774; font-size: 14px; font-weight: 700; text-decoration: none; }
 .selection-handoff a:hover { text-decoration: underline; }
