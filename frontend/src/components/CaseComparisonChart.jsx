@@ -145,9 +145,9 @@ export default function CaseComparisonChart() {
 
   return (
     <section className="chart-card case-card">
-      <h2>Similar conditions, different fertility</h2>
-      <p>These pairs began with a small fertility gap and had similar measured development conditions in 2001 and 2023. Follow how all four measures changed between those years.</p>
-      <label>Choose a case
+      <h2>Similar on paper, different fertility paths</h2>
+      <p>These pairs were selected because their fertility gaps widened. They are interesting contrasts, not typical outcomes. Income, mortality, and education were used to find similar pairs; fertility was compared afterward.</p>
+      <label>Choose a pair
         <select value={caseIndex} onChange={e => setCaseIndex(Number(e.target.value))}>
           {shortlist.map((item, index) =>
             <option key={item.codes.join('-')} value={index}>{item.names.join(' / ')}</option>

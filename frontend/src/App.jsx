@@ -103,11 +103,19 @@ export default function App() {
           <span className="section-number">05</span>
           <div>
             <h2 id="section-5">Similar beginnings, different journeys</h2>
-            <p>Choose one economy to see nearby peers based on three measured starting conditions in 2001. Then compare the fertility paths that followed.</p>
+            <p>Choose an economy, meet peers with similar measured conditions in 2001, and follow their fertility paths.</p>
           </div>
         </div>
         <PeerHistoryChart />
-        <CaseComparisonChart />
+        <div className="case-bridge">
+          <span>Surprising contrasts</span>
+          <h3>Similar conditions at both ends. Different fertility paths.</h3>
+          <p>The explorer above matches conditions in 2001. These pairs also look similar on the measured indicators in 2023, yet their fertility gaps grew.</p>
+        </div>
+        <details className="case-study">
+          <summary><span><strong>Explore a surprising pair</strong><small>Start with Albania and Mongolia · compare fertility, income, mortality, and education</small></span><span aria-hidden="true" className="case-arrow">⌄</span></summary>
+          <CaseComparisonChart />
+        </details>
       </section>
 
       <section className="story-section" aria-labelledby="section-6">

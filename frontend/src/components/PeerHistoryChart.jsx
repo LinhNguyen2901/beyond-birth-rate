@@ -101,10 +101,12 @@ export default function PeerHistoryChart() {
       <div className="peer-legend">
         {countries.map((d, index) => <span key={d.iso3}><i style={{ borderColor: d.color, borderTopStyle: d.dash ? 'dashed' : 'solid' }} />{d.start.country}{index === 0 && ' (chosen)'}</span>)}
       </div>
+      <p className="peer-mobile-cue">Swipe sideways to see the full chart. Use the legend to match each line to an economy.</p>
       <svg ref={chartRef} role="img" aria-label={`Fertility histories for ${countries[0].start.country} and ${countries.length - 1} nearby peers, 2001 to 2023`} />
       <div className="chart-tooltip" aria-hidden="true" />
       <p className="chart-readout" aria-live="polite">Hover or focus a line to see its endpoint values.</p>
-      <div className="table-wrap">
+      <p className="peer-mobile-cue peer-table-cue">Swipe the table sideways to see all starting values.</p>
+      <div className="table-wrap" tabIndex="0" role="region" aria-label="Measured starting conditions table, scroll horizontally for more columns">
         <table>
           <caption>Measured starting conditions in 2001</caption>
           <thead><tr><th>Economy</th><th>GDP/person ($)</th><th>Under-five deaths/1,000</th><th>Female enrollment (%)</th><th>Fertility</th></tr></thead>

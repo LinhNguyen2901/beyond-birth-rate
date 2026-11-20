@@ -232,6 +232,20 @@
 .peer-legend { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-top: 18px; color: #314b60; font-size: 13px; }
 .peer-legend span { display: inline-flex; align-items: center; gap: 7px; }
 .peer-legend i { display: inline-block; width: 22px; border-top: 3px solid; }
+.peer-mobile-cue { display: none; }
+.case-bridge { margin: 34px 0 14px; padding: 24px 28px; border-left: 4px solid #1a7774; border-radius: 0 12px 12px 0; background: #edf5f3; }
+.case-bridge > span { color: #1a7774; font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.case-bridge h3 { margin: 8px 0; color: #17324a; font-size: 22px; }
+.case-bridge p { max-width: 780px; margin: 0; color: #52677b; line-height: 1.55; }
+.case-study > summary { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 18px 24px; border: 1px solid #d5e3e5; border-radius: 12px; background: #fff; color: #17324a; cursor: pointer; list-style: none; }
+.case-study > summary::-webkit-details-marker { display: none; }
+.case-study > summary:hover { border-color: #1a7774; background: #f8fbfa; }
+.case-study > summary:focus-visible { outline: 2px solid #1a7774; outline-offset: 3px; }
+.case-study > summary span:first-child { display: flex; flex-direction: column; gap: 4px; }
+.case-study > summary small { color: #52677b; font-size: 13px; font-weight: 400; }
+.case-arrow { flex: none; color: #1a7774; font-size: 28px; line-height: 1; }
+.case-study[open] .case-arrow { transform: rotate(180deg); }
+.case-study .case-card { margin-top: 14px; }
 
 .case-card { border-color: #d7e6e3; }
 .case-card > label { margin-top: 22px; }
@@ -293,6 +307,12 @@
   .overview-history-grid { grid-template-columns: 1fr; }
   .overview-card svg { min-width: 0; }
   .chart-card .peer-controls label { min-width: 0; width: 100%; }
+  .peer-mobile-cue { display: block; margin-top: 14px !important; padding: 9px 12px; border-radius: 7px; background: #f0f6f5; color: #315d5a !important; font-size: 12px; }
+  .peer-table-cue { margin-bottom: 0 !important; }
+  .peer-legend { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
+  .peer-legend span { min-width: 0; }
+  .case-bridge { padding: 18px; }
+  .case-study > summary { padding: 15px; }
   .case-card > label { width: 100%; }
   .case-card > label select { width: 100%; }
   .case-grid { grid-template-columns: 1fr; }
