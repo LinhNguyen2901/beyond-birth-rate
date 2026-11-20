@@ -228,6 +228,7 @@
 .peer-legend i { display: inline-block; width: 22px; border-top: 3px solid; }
 .peer-main { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(400px, 1fr); align-items: start; gap: 22px; margin-top: 16px; }
 .peer-plot, .peer-values { min-width: 0; }
+.peer-plot .peer-controls { margin: 0 0 12px; }
 .peer-plot svg { max-width: none; margin-top: 0; }
 .peer-values { padding: 14px; border: 1px solid #d9e6e5; border-radius: 12px; background: #f8fbfa; }
 .peer-values h3 { display: flex; justify-content: space-between; margin: 0 0 7px; color: #17324a; font-size: 16px; }
@@ -237,7 +238,8 @@
 .peer-value i { flex: none; width: 20px; border-top: 3px solid; }
 .peer-value > div { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2px 12px; margin: 4px 0 0 28px; }
 .peer-value span { display: flex; justify-content: space-between; gap: 4px; color: #718398; font-size: 11px; }
-.peer-value b { color: #314b60; font-weight: 650; }
+.peer-value b { color: #314b60; font-weight: 650; white-space: nowrap; }
+.peer-values .peer-missing-note { margin-top: 7px; color: #718398; font-size: 11px; }
 .case-bridge { margin: 34px 0 14px; padding: 24px 28px; border-left: 4px solid #1a7774; border-radius: 0 12px 12px 0; background: #edf5f3; }
 .case-bridge > span { color: #1a7774; font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
 .case-bridge h3 { margin: 8px 0; color: #17324a; font-size: 22px; }
@@ -284,7 +286,7 @@
 @media (max-width: 1000px) {
   .peer-main, .model-main { grid-template-columns: 1fr; }
   .peer-values { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 16px; }
-  .peer-values h3 { grid-column: 1 / -1; }
+  .peer-values h3, .peer-missing-note { grid-column: 1 / -1; }
 }
 @media (max-width: 800px) {
   .case-grid { grid-template-columns: 1fr; }
@@ -326,6 +328,8 @@
   .peer-plot svg, .model-plot svg { min-width: 0; }
   .peer-values { grid-template-columns: 1fr; }
   .peer-value > div { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .peer-value span { display: block; }
+  .peer-value b { display: block; }
   .peer-legend { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
   .peer-legend span { min-width: 0; }
   .case-bridge { padding: 18px; }

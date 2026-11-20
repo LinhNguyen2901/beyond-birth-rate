@@ -8,6 +8,8 @@ import { measureColors, selectionColor } from '../chartColors'
 const colors = [selectionColor, measureColors.fertility, '#438f8c', '#145653', '#619e9b', '#306b68']
 const dashes = [null, null, '9 4', '3 4', '12 4 3 4', '2 3']
 const education2001 = new Map(educationData.filter(d => d.year === 2001).map(d => [d.iso3, d.education]))
+const education2023 = new Map(educationData.filter(d => d.year === 2023).map(d => [d.iso3, d.education]))
+const end2023 = new Map(data.filter(d => d.year === 2023).map(d => [d.iso3, d]))
 const choices = data.filter(d => d.year === 2001 && education2001.has(d.iso3))
   .map(d => ({ ...d, education: education2001.get(d.iso3) }))
   .sort((a, b) => a.country.localeCompare(b.country))
@@ -39,6 +41,8 @@ export default function PeerHistoryChart() {
       color: colors[index],
       dash: dashes[index],
       start,
+      end: end2023.get(start.iso3),
+      educationEnd: education2023.get(start.iso3),
       history: data.filter(d => d.iso3 === start.iso3 && d.year >= 2001 && d.year <= 2023),
     }))
   }, [selectedCountry])
@@ -98,25 +102,32 @@ export default function PeerHistoryChart() {
     <section className="chart-card">
       <h2>Compare fertility paths</h2>
       <p>Choose one economy. Up to five economies from the same region with the closest measured starting conditions in 2001 appear automatically.</p>
-      <div className="peer-controls">
-        <label style={{ borderLeftColor: colors[0] }}>Choose an economy
-          <select value={selectedCountry} onChange={e => setSelectedCountry(e.target.value)}>
-            {choices.map(d => <option key={d.iso3} value={d.iso3}>{d.country}</option>)}
-          </select>
-        </label>
-      </div>
       <div className="peer-main">
         <div className="peer-plot">
+          <div className="peer-controls">
+            <label style={{ borderLeftColor: colors[0] }}>Choose an economy
+              <select value={selectedCountry} onChange={e => setSelectedCountry(e.target.value)}>
+                {choices.map(d => <option key={d.iso3} value={d.iso3}>{d.country}</option>)}
+              </select>
+            </label>
+          </div>
           <svg ref={chartRef} role="img" aria-label={`Fertility histories for ${countries[0].start.country} and ${countries.length - 1} nearby peers, 2001 to 2023`} />
           <div className="chart-tooltip" aria-hidden="true" />
           <p className="chart-readout" aria-live="polite">Hover or focus a line to see its endpoint values.</p>
         </div>
         <div className="peer-values">
-          <h3>Starting conditions <span>2001</span></h3>
+          <h3>How conditions changed <span>2001 → 2023</span></h3>
           {countries.map((d, index) => <div className="peer-value" key={d.iso3}>
             <strong><i style={{ borderColor: d.color, borderTopStyle: d.dash ? 'dashed' : 'solid' }} />{d.start.country}{index === 0 && ' (chosen)'}</strong>
-            <div><span>Income <b>${Math.round(d.start.gdp_pc).toLocaleString()}</b></span><span>Under-5 /1k <b>{d.start.mortality.toFixed(1)}</b></span><span>Enrollment <b>{d.start.education.toFixed(1)}%</b></span><span>Fertility <b>{d.start.fertility.toFixed(2)}</b></span></div>
+            <div>
+              <span>Income <b>${Math.round(d.start.gdp_pc).toLocaleString()} → ${Math.round(d.end.gdp_pc).toLocaleString()}</b></span>
+              <span>Under-5 /1k <b>{d.start.mortality.toFixed(1)} → {d.end.mortality.toFixed(1)}</b></span>
+              <span>Enrollment <b>{d.start.education.toFixed(1)}% → {d.educationEnd == null ? '—' : `${d.educationEnd.toFixed(1)}%`}</b></span>
+              <span>Fertility <b>{d.start.fertility.toFixed(2)} → {d.end.fertility.toFixed(2)}</b></span>
+            </div>
           </div>)}
+          {countries.some(d => d.educationEnd == null) &&
+            <p className="peer-missing-note">— means no 2023 enrollment data.</p>}
         </div>
       </div>
       <p className="chart-source">Peers share the chosen economy's World Bank region and are closest on 2001 log GDP per person, under-five mortality, and female secondary enrollment after scaling each measure. Choices: 124 economies with all three measures in 2001. Fertility paths: 2001–2023 main sample. Similar measured values do not imply identical circumstances. Source: World Bank WDI.</p>
