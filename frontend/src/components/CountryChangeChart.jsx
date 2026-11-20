@@ -104,7 +104,7 @@ export default function CountryChangeChart({ initialIndicator = 'gdp', onExplore
   return (
     <section className="chart-card">
       <div className="chart-top">
-      <p>Each dot compares one country at the start and end of {period}.</p>
+      <p>One dot = one country's change over {period}. Below zero means fertility fell.</p>
       <p className="selection-note">Shaded area: {indicator === 'mortality' ? 'mortality and fertility both fell.' : indicator === 'gdp' ? 'income rose while fertility fell.' : 'enrollment rose while fertility fell.'}</p>
       <label>Compare fertility change with:{' '}
         <select value={indicator} onChange={e => {
@@ -135,7 +135,7 @@ export default function CountryChangeChart({ initialIndicator = 'gdp', onExplore
       <svg ref={chartRef} role="img" aria-label={`${period} country changes: fertility and ${indicator}${indicator === 'gdp' && !showAllIncome ? ', income range minus 100 to plus 500 percent' : ', all countries'}`} />
       <div className="chart-tooltip" aria-hidden="true" />
       <p className="chart-readout" aria-live="polite">Hover or focus a mark to see its exact values.</p>
-      <p className="chart-source">{points.length} countries, {period}. Percent change = (end − start) / start × 100. {indicator === 'education' && 'Enrollment uses end − start in percentage points, with a separate sample available at both endpoints. '}These comparisons do not establish cause. Source: World Bank WDI.</p>
+      <p className="chart-source">{points.length} countries. Percent changes are relative to starting values. {indicator === 'education' && 'Enrollment uses percentage-point changes and countries with data at both endpoints. '}These patterns do not prove cause. Source: World Bank WDI.</p>
     </section>
   )
 }

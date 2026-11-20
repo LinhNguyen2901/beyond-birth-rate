@@ -69,13 +69,13 @@ export default function App() {
           <span className="section-number">04</span>
           <div>
             <h2 id="section-4">Did these changes happen together?</h2>
-            <p>Now compare how much each country changed.</p>
+            <p>Did bigger changes in living conditions go with bigger fertility drops?</p>
           </div>
         </div>
         <ScrollStory steps={[
-          { title: 'Does income growth matter?', indicator: 'gdp', text: 'Bigger income gains did not consistently come with bigger fertility declines.' },
-          { title: 'What about child mortality?', indicator: 'mortality', text: 'Even where child mortality fell sharply, fertility did not always fall as much.' },
-          { title: 'Education shows a clearer pattern', indicator: 'education', text: 'Bigger gains in female secondary enrollment often went with bigger fertility declines, though there are exceptions.' },
+          { title: 'Income', indicator: 'gdp', text: 'Faster income growth did not always go with a bigger fertility drop.' },
+          { title: 'Child mortality', indicator: 'mortality', text: 'A big drop in child mortality did not always mean a big drop in fertility.' },
+          { title: 'Education', indicator: 'education', text: 'Countries with bigger enrollment gains often had bigger fertility drops, but not always.' },
         ]}>
           {(step, onExplore) => <CountryChangeChart initialIndicator={step.indicator} onExplore={onExplore} />}
         </ScrollStory>
