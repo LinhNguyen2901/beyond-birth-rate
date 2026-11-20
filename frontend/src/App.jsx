@@ -86,13 +86,13 @@ export default function App() {
           <span className="section-number">04</span>
           <div>
             <h2 id="section-4">Did they change together?</h2>
-            <p>Comparing each economy in 1990 and 2024 asks a different question: how did fertility change alongside child mortality or income?</p>
+            <p>How did fertility change alongside mortality, income, or education? Positive values mean an increase; negative values mean a decrease.</p>
           </div>
         </div>
         <ScrollStory steps={[
-          { title: 'Trade a snapshot for a journey.', indicator: 'mortality', text: 'Each dot now compares one economy with itself, from 1990 to 2024. Larger reductions in child mortality tend to accompany larger reductions in fertility.', detail: 'Move right · Larger mortality reduction' },
-          { title: 'Income tells a less tidy story.', indicator: 'gdp', text: 'Switch to income growth. The dots are more scattered: a larger rise in income does not consistently go with a larger fertility decline. Comparing changes asks a different question from comparing levels.', detail: 'Move right · Greater GDP growth' },
-          { title: 'What changed in education?', indicator: 'education', text: 'Compare gains in female secondary enrollment with fertility reductions. This view uses economies with data at both endpoints of 2001–2023. Hover over a dot to explore its changes.', detail: '2001–2023 · Separate education sample' },
+          { title: 'Falling mortality, different fertility paths.', indicator: 'mortality', text: 'Economies with bigger percentage declines in child mortality only weakly tended to have bigger percentage declines in fertility. The wide spread shows that the two did not change closely together everywhere.', detail: 'Takeaway ? A weak relationship, with many exceptions' },
+          { title: 'Income growth is a weak guide.', indicator: 'gdp', text: 'Bigger income gains only weakly tended to go with bigger fertility declines. Knowing how much an economy grew tells us little about how far its fertility fell.', detail: 'Takeaway ? More growth does not reliably mean a bigger fertility drop' },
+          { title: 'Education gains show a clearer pattern.', indicator: 'education', text: 'Economies with bigger gains in female secondary enrollment tended to see larger percentage declines in fertility. This pattern is clearer than the income comparison, but countries still differ substantially.', detail: 'Takeaway ? Bigger enrollment gains often accompanied bigger fertility declines' },
         ]}>
           {step => <CountryChangeChart initialIndicator={step.indicator} />}
         </ScrollStory>
