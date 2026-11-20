@@ -129,7 +129,7 @@ Under-five mortality: ${d.mortality.toFixed(1)} per 1,000`
     <section className="chart-card">
       <div className="chart-top">
       <h2>Fertility and {measureNames[indicator]}</h2>
-      <p>Each dot is one country. Select one to follow its history.</p>
+      <p>Choose a dot to bring that country into the next chapter.</p>
 
       <label>
         Year: {year}{' '}
@@ -169,7 +169,10 @@ Under-five mortality: ${d.mortality.toFixed(1)} per 1,000`
         aria-label={`Scatterplot of fertility and ${indicator} in ${year}`} />
       <div className="chart-tooltip" aria-hidden="true" />
       <p className="chart-readout" aria-live="polite">Hover or focus a mark to see its exact values.</p>
-      <p className="selection-note">Selected: <strong>{data.find(d => d.iso3 === selectedCountry)?.country}</strong>{!points.some(d => d.iso3 === selectedCountry) && ' (not in this year’s sample)'}</p>
+      <div className="selection-handoff">
+        <p className="selection-note">Selected: <strong>{data.find(d => d.iso3 === selectedCountry)?.country}</strong>{!points.some(d => d.iso3 === selectedCountry) && ' (not in this year’s sample)'}</p>
+        <a href="#section-3">View this country's history →</a>
+      </div>
       <p className="chart-source">
         {isEducation
           ? `${points.length} countries in ${year}. Separate 2001–2023 available-data sample; gross enrollment can exceed 100%. Source: World Bank WDI.`

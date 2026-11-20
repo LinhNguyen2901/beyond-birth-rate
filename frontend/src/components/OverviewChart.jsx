@@ -6,6 +6,7 @@ import { addTooltip } from '../chartTooltip'
 import { measureColors, selectionColor } from '../chartColors'
 
 const historyMax = { fertility: 8, mortality: 500, education: 180 }
+const countries = data.filter(d => d.year === 2024).sort((a, b) => a.country.localeCompare(b.country))
 
 export default function OverviewChart({ selectedCountry, onCountrySelect }) {
   const [year, setYear] = useState(2024)
@@ -118,9 +119,17 @@ export default function OverviewChart({ selectedCountry, onCountrySelect }) {
           <p className="chart-readout" aria-live="polite">Hover or focus a mark to see its exact values.</p>
         </div>
         <div>
-          <h2>B &nbsp; Following {country?.country}</h2>
-          <p>1990–2024</p>
-          <p className="history-note">Each measure keeps the same axes when you choose another country.</p>
+          <div className="overview-header">
+            <div>
+              <h2>B &nbsp; Following {country?.country}</h2>
+              <p>1990–2024</p>
+            </div>
+            <label>Choose a country
+              <select value={selectedCountry} onChange={e => onCountrySelect(e.target.value)}>
+                {countries.map(d => <option key={d.iso3} value={d.iso3}>{d.country}</option>)}
+              </select>
+            </label>
+          </div>
           <div className="overview-history-grid">
             <div>
               <h3>Fertility</h3>
@@ -145,12 +154,12 @@ export default function OverviewChart({ selectedCountry, onCountrySelect }) {
               <svg ref={educationRef} role="img" aria-label={`Female secondary enrollment history for ${country?.country}`} />
               <div className="chart-tooltip" aria-hidden="true" />
               {educationCount > 0 && <p className="chart-readout" aria-live="polite">Hover or focus for exact values.</p>}
-              <p className="history-note">Separate 2001–2023 sample{educationCount > 0 && ` · ${educationCount} observations`}. Gross enrollment can exceed 100%.</p>
+              <p className="history-note">{educationCount} observations. Gross enrollment can exceed 100%.</p>
             </div>
           </div>
         </div>
       </div>
-      <p className="chart-source">Navy marks the selected country. Source: World Bank WDI.</p>
+      <p className="chart-source">The axes stay fixed across countries. Source: World Bank WDI.</p>
     </section>
   )
 }

@@ -31,7 +31,7 @@ export default function App() {
           <span className="section-number">01</span>
           <div>
             <h2 id="section-1">How the world has changed</h2>
-            <p>Across countries, fertility and child mortality fell while income and enrollment rose.</p>
+            <p>In this sample, fertility and child mortality fell while income and enrollment rose.</p>
           </div>
         </div>
         <MedianTrends />
@@ -59,7 +59,7 @@ export default function App() {
           <span className="section-number">03</span>
           <div>
             <h2 id="section-3">How has one country changed?</h2>
-            <p>Pick a dot to follow its history.</p>
+            <p>Choose a country to see how it changed over time.</p>
           </div>
         </div>
         <OverviewChart selectedCountry={selectedCountry} onCountrySelect={setSelectedCountry} />
