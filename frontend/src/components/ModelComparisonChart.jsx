@@ -88,14 +88,14 @@ export default function ModelComparisonChart() {
 
   return (
     <section className="chart-card model-card">
-      <p>Bars show average prediction error in births per woman. <strong>Shorter is better.</strong></p>
+      <p>We used a random forest (many decision trees) to predict fertility from income, child mortality, and female secondary enrollment. Tests held out entire countries. <strong>Shorter bars are better.</strong></p>
       <div className="model-main">
         <div className="model-explainer">
           <div className="model-takeaway">
             <div>
               <span>The main result</span>
               <strong>{improvement}% less error</strong>
-              <p>Income, mortality, and education together roughly halve the average miss.</p>
+              <p>These measures cut the average miss to about 0.49 births per woman, but they cannot predict every country closely.</p>
             </div>
             <div className="model-before-after">
               <span>Median guess <strong>{baseline.mae.toFixed(2)}</strong></span>
@@ -103,7 +103,7 @@ export default function ModelComparisonChart() {
               <small>Births per woman off, on average</small>
             </div>
           </div>
-          <p className="model-note">Without income, the error barely changes. Without child mortality, it rises the most. That does not tell us what causes fertility to change.</p>
+          <p className="model-note">Child mortality and education help most here; income adds little once they are included. That does not show what causes fertility to change.</p>
         </div>
         <div className="model-plot">
           <h3>What if we leave one measure out?</h3>
