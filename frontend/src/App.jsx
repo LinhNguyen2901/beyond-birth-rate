@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { motion, useScroll } from 'motion/react'
-import AllCountryFertilityChart from './components/AllCountryFertilityChart'
 import MedianTrends from './components/MedianTrends'
 import FertilityVsIndicatorScatterplot from './components/FertilityVsIndicatorScatterplot'
 import CountryChangeChart from './components/CountryChangeChart'
@@ -10,14 +9,6 @@ import ModelComparisonChart from './components/ModelComparisonChart'
 import OverviewChart from './components/OverviewChart'
 import ScrollStory from './components/ScrollStory'
 import './App.css'
-
-function OpeningStep({ country, onCountrySelect }) {
-  const [selected, setSelected] = useState(country)
-  return <AllCountryFertilityChart selectedCountry={selected} onCountrySelect={code => {
-    setSelected(code)
-    onCountrySelect(code)
-  }} />
-}
 
 export default function App() {
   const [selectedCountry, setSelectedCountry] = useState('IND')
@@ -40,17 +31,10 @@ export default function App() {
           <span className="section-number">01</span>
           <div>
             <h2 id="section-1">A world of changing paths</h2>
-            <p>Start with the broad trends, then scroll through individual economies to see how their paths differ.</p>
+            <p>See how fertility, income, child mortality, and education changed over time.</p>
           </div>
         </div>
         <MedianTrends />
-        <ScrollStory steps={[
-          { title: 'Many paths, one broad shift.', country: 'IND', text: 'Follow India through the web of country histories. Across the sample, the median fertility rate moves downward—but no single line tells the whole story.', detail: '1990–2024 · 182 economies' },
-          { title: 'The pace is not the same.', country: 'NGA', text: 'Now follow Nigeria. Its path sits above the median, even as fertility falls. The broad trend leaves room for very different starting points and speeds of change.', detail: 'Highlighted economy · Nigeria' },
-          { title: 'Some paths fall much further.', country: 'KOR', text: 'Korea ends near the bottom of the chart. Choose another economy to see where its path fits, then explore what changed alongside fertility.', detail: 'Highlighted economy · Korea, Rep.' },
-        ]}>
-          {step => <OpeningStep country={step.country} onCountrySelect={setSelectedCountry} />}
-        </ScrollStory>
       </section>
 
       <section className="story-section" aria-labelledby="section-2">
