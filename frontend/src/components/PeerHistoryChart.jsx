@@ -101,7 +101,7 @@ export default function PeerHistoryChart() {
   return (
     <section className="chart-card">
       <h2>Fertility since 2001</h2>
-      <p>The chart adds up to five countries from the same region that were most similar in 2001.</p>
+      <p><strong>Fertility often moves in the same direction among these peers, though the pace of change differs.</strong> Compare your country with up to five peers from the same region, matched on income, child mortality, and enrollment in 2001.</p>
       <div className="peer-main">
         <div className="peer-plot">
           <div className="peer-controls">

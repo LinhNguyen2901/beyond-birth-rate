@@ -7,6 +7,8 @@ import { measureColors, selectionColor } from '../chartColors'
 
 const historyMax = { fertility: 8, mortality: 500, education: 180 }
 const countries = data.filter(d => d.year === 2024).sort((a, b) => a.country.localeCompare(b.country))
+const regions = [...new Set(data.map(d => d.region.trim()))].sort()
+const regionColor = d3.scaleOrdinal().domain(regions).range(d3.schemeTableau10)
 
 export default function OverviewChart({ selectedCountry, onCountrySelect }) {
   const [year, setYear] = useState(2024)
@@ -34,14 +36,16 @@ export default function OverviewChart({ selectedCountry, onCountrySelect }) {
     const dots = chart.selectAll('circle').data(current).join('circle')
       .attr('cx', d => x(d.gdp_pc)).attr('cy', d => y(d.fertility))
       .attr('r', d => d.iso3 === selectedCountry ? 7 : 4)
-      .attr('fill', d => d.iso3 === selectedCountry ? selectionColor : measureColors.gdp_pc).attr('opacity', 0.8)
+      .attr('fill', d => regionColor(d.region.trim())).attr('opacity', 0.8)
+      .style('stroke', d => d.iso3 === selectedCountry ? selectionColor : null)
+      .style('stroke-width', d => d.iso3 === selectedCountry ? 2.5 : null)
       .attr('tabindex', 0)
-      .attr('aria-label', d => `${d.country}: ${d.fertility.toFixed(2)} births per woman, GDP per person $${Math.round(d.gdp_pc)}`)
+      .attr('aria-label', d => `${d.country}, ${d.region.trim()}: ${d.fertility.toFixed(2)} births per woman, GDP per person $${Math.round(d.gdp_pc)}`)
       .style('cursor', 'pointer')
       .on('click', (event, d) => onCountrySelect(d.iso3))
       .on('keydown', (event, d) => { if (event.key === 'Enter') onCountrySelect(d.iso3) })
     addTooltip(dots, scatterRef.current, d =>
-      `${d.country}\nFertility: ${d.fertility.toFixed(2)} births per woman\nGDP per person: $${d3.format(',.0f')(d.gdp_pc)}`
+      `${d.country} · ${d.region.trim()}\nFertility: ${d.fertility.toFixed(2)} births per woman\nGDP per person: $${d3.format(',.0f')(d.gdp_pc)}`
     )
     dots.filter(d => d.iso3 === selectedCountry).raise()
     chart.append('text').attr('x', width / 2).attr('y', height + 48)
@@ -115,6 +119,11 @@ export default function OverviewChart({ selectedCountry, onCountrySelect }) {
           <label>Year: {year} <input type="range" min="1990" max="2024" value={year}
             onChange={e => setYear(Number(e.target.value))} /></label>
           <svg ref={scatterRef} role="img" aria-label={`${year} fertility versus GDP per person across countries`} />
+          <div className="region-legend" aria-label="Dot colors by World Bank region">
+            {regions.map(region => <span key={region}>
+              <i style={{ backgroundColor: regionColor(region) }} aria-hidden="true" />{region}
+            </span>)}
+          </div>
           <div className="chart-tooltip" aria-hidden="true" />
           <p className="chart-readout" aria-live="polite">Hover or focus a mark to see its exact values.</p>
         </div>

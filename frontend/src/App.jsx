@@ -3,7 +3,6 @@ import { motion, useScroll } from 'motion/react'
 import MedianTrends from './components/MedianTrends'
 import FertilityVsIndicatorScatterplot from './components/FertilityVsIndicatorScatterplot'
 import CountryChangeChart from './components/CountryChangeChart'
-import PeerHistoryChart from './components/PeerHistoryChart'
 import CaseComparisonChart from './components/CaseComparisonChart'
 import ModelComparisonChart from './components/ModelComparisonChart'
 import OverviewChart from './components/OverviewChart'
@@ -82,23 +81,15 @@ export default function App() {
         </ScrollStory>
       </section>
 
-      <section className="story-section" aria-labelledby="section-5">
+      <section className="story-section outlier-section" aria-labelledby="section-5">
         <div className="section-intro">
           <span className="section-number">05</span>
           <div>
-            <h2 id="section-5">What if countries start out alike?</h2>
-            <p>Choose a country and see what happened to its closest peers since 2001.</p>
+            <h2 id="section-5">Outlier pairs</h2>
+            <p>These pairs had similar income, child mortality, and enrollment in both 2001 and 2023. They were selected because their fertility rates moved apart, so they illustrate exceptions rather than typical outcomes.</p>
           </div>
         </div>
-        <PeerHistoryChart />
-        <div className="case-bridge">
-          <h3>Fertility didn't follow</h3>
-          <p>These pairs started alike, and their income, child mortality, and enrollment changed by similar amounts from 2001 to 2023. Their fertility rates moved apart.</p>
-        </div>
-        <details className="case-study">
-          <summary><span><strong>Explore an unusual pair</strong></span><span aria-hidden="true" className="case-arrow">⌄</span></summary>
-          <CaseComparisonChart />
-        </details>
+        <CaseComparisonChart />
       </section>
 
       <section className="story-section" aria-labelledby="section-6">
