@@ -16,7 +16,7 @@
 .step-count { color: #1a7774; font-size: 12px; letter-spacing: .12em; font-weight: 800; }
 .step-copy h3 { margin: 14px 0 18px; color: #17324a; font-size: clamp(25px, 2.4vw, 36px); line-height: 1.15; letter-spacing: -.035em; }
 .step-copy p { margin: 0; color: #52677b; font-size: 16px; line-height: 1.8; }
-.story-stage { position: sticky; top: 12px; min-width: 0; max-height: calc(100vh - 24px); overflow-y: auto; overflow-x: hidden; scrollbar-width: thin; padding: 0 4px 4px; }
+.story-stage { position: sticky; top: 12px; display: flex; flex-direction: column; min-width: 0; height: calc(100dvh - 24px); padding: 0 4px 4px; }
 .story-stage-nav { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 8px 3px; }
 .story-stage-nav > span { color: #52677b; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; }
 .story-stage-nav button { width: 29px; height: 29px; margin-left: 6px; border: 1px solid #cbdcdd; border-radius: 50%; color: #52677b; background: white; cursor: pointer; }
@@ -27,10 +27,11 @@
 .story-view-label { display: flex; align-items: center; gap: 16px; padding: 13px 18px; background: #17324a; color: #fff; border-radius: 12px 12px 0 0; }
 .story-view-label span { flex: none; color: #99d9cc; font-size: 11px; font-weight: 700; letter-spacing: .08em; }
 .story-view-label strong { font-size: 15px; font-weight: 600; }
-.story-stage .chart-card { margin: 0; padding: 18px; border-radius: 0 0 16px 16px; border-color: #d5e3e5; box-shadow: 0 12px 30px #17324a08; }
+.story-chart-stage { display: flex; flex: 1; min-height: 0; }
+.story-stage .chart-card { display: flex; flex: 1; flex-direction: column; min-height: 0; margin: 0; padding: 18px; border-radius: 0 0 16px 16px; border-color: #d5e3e5; box-shadow: 0 12px 30px #17324a08; }
 .story-stage .chart-card h2 { font-size: 21px; }
-.story-stage .chart-card > p { font-size: 13px; }
-.story-stage .chart-card svg { height: clamp(280px, 42vh, 400px); max-height: none; }
+.story-stage .chart-card p { font-size: 13px; }
+.story-stage .chart-card svg { flex: 1; min-height: 0; width: 100%; max-width: none; height: auto; margin: 12px 0; }
 .story-stage .all-country-header { gap: 16px; }
 .story-stage .all-country-header p { font-size: 13px; }
 .story-stage .all-country-header select { width: 180px; }
@@ -59,7 +60,7 @@
 .intro-facts span { display: flex; flex-direction: column; gap: 5px; color: #b8cfd7; font-size: 12px; }
 .intro-facts strong { color: white; font-size: 28px; font-weight: 600; }
 @media (min-width: 1024px) and (max-height: 780px) {
-  .story-stage .chart-card svg { margin-top: 12px; }
+  .story-stage .chart-card svg { margin-top: 8px; }
   .story-stage .chart-card { padding: 14px; }
   .story-stage .chart-card label, .story-stage .chart-card button { margin-top: 10px; padding: 6px 9px; font-size: 12px; }
   .story-stage .all-country-summary { margin-top: 10px; padding: 8px 10px; }

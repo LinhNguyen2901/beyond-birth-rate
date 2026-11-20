@@ -17,6 +17,7 @@ const measureNames = { gdp_pc: 'GDP per person', mortality: 'child mortality', e
 
 export default function FertilityVsIndicatorScatterplot({ selectedCountry, onCountrySelect, initialYear = 2024, initialIndicator = 'gdp_pc', onExplore }) {
   const chartRef = useRef(null)
+  const [chartSize, setChartSize] = useState({ width: 700, height: 340 })
   const [year, setYear] = useState(initialYear)
   const [indicator, setIndicator] = useState(initialIndicator)
   const [playing, setPlaying] = useState(false)
@@ -24,6 +25,19 @@ export default function FertilityVsIndicatorScatterplot({ selectedCountry, onCou
   const firstYear = isEducation ? 2001 : 1990
   const lastYear = isEducation ? 2023 : 2024
   const points = (isEducation ? educationData : data).filter(d => d.year === year)
+
+  useEffect(() => {
+    if (!chartRef.current.closest('.story-stage')) return
+    const observer = new ResizeObserver(entries => {
+      const width = Math.round(entries[0].contentRect.width)
+      const height = Math.round(entries[0].contentRect.height)
+      if (width > 120 && height > 120) {
+        setChartSize(current => current.width === width && current.height === height ? current : { width, height })
+      }
+    })
+    observer.observe(chartRef.current)
+    return () => observer.disconnect()
+  }, [])
 
   useEffect(() => {
     if (!playing) return
@@ -36,11 +50,11 @@ export default function FertilityVsIndicatorScatterplot({ selectedCountry, onCou
   useEffect(() => {
     const points = (indicator === 'education' ? educationData : data).filter(d => d.year === year)
     const margin = { top: 20, right: 25, bottom: 65, left: 60 }
-    const width = 700 - margin.left - margin.right
-    const height = 400 - margin.top - margin.bottom
+    const width = chartSize.width - margin.left - margin.right
+    const height = chartSize.height - margin.top - margin.bottom
 
     const svg = d3.select(chartRef.current)
-      .attr('viewBox', '0 0 700 400')
+      .attr('viewBox', `0 0 ${chartSize.width} ${chartSize.height}`)
 
     svg.selectAll('*').remove()
 
@@ -109,10 +123,11 @@ Under-five mortality: ${d.mortality.toFixed(1)} per 1,000`
       .attr('y', -45)
       .attr('text-anchor', 'middle')
       .text('Births per woman')
-  }, [year, indicator, selectedCountry, onCountrySelect])
+  }, [year, indicator, selectedCountry, onCountrySelect, chartSize])
 
   return (
     <section className="chart-card">
+      <div className="chart-top">
       <h2>How do economies compare?</h2>
       <p>Each dot is one economy. Select one to follow its history.</p>
 
@@ -148,6 +163,7 @@ Under-five mortality: ${d.mortality.toFixed(1)} per 1,000`
         setYear(2024)
         setIndicator('gdp_pc')
       }}>Reset view</button>
+      </div>
 
       <svg ref={chartRef} role="img"
         aria-label={`Scatterplot of fertility and ${indicator} in ${year}`} />

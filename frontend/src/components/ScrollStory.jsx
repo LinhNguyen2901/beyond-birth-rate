@@ -72,7 +72,7 @@ export default function ScrollStory({ steps, children }) {
             {exploring && <button className="resume-story" type="button" onClick={resumeStory}>Resume story</button>}</div>
         </div>
         <div className="story-view-label"><span>{exploring ? 'EXPLORE MODE' : `STEP ${active + 1} / ${steps.length}`}</span><strong>{exploring ? exploring.label : steps[active].title}</strong></div>
-        <motion.div key={`${active}-${guideVersion}`} initial={reducedMotion ? false : { opacity: 0, x: 24 }}
+        <motion.div className="story-chart-stage" key={`${active}-${guideVersion}`} initial={reducedMotion ? false : { opacity: 0, x: 24 }}
           animate={{ opacity: 1, x: 0 }} transition={{ duration: reducedMotion ? 0 : 0.45 }}>
           {children(steps[active], label => setExploring({ step: active, label }))}
         </motion.div>

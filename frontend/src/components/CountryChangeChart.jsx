@@ -31,13 +31,28 @@ const educationChanges = educationData.filter(d => d.year === 2001 && educationE
 export default function CountryChangeChart({ initialIndicator = 'gdp', onExplore }) {
   const chartRef = useRef(null)
   const [indicator, setIndicator] = useState(initialIndicator)
+  const [chartSize, setChartSize] = useState({ width: 700, height: 340 })
   const points = indicator === 'education' ? educationChanges : changes
   const period = indicator === 'education' ? '2001–2023' : '1990–2024'
+
+  useEffect(() => {
+    if (!chartRef.current.closest('.story-stage')) return
+    const observer = new ResizeObserver(entries => {
+      const width = Math.round(entries[0].contentRect.width)
+      const height = Math.round(entries[0].contentRect.height)
+      if (width > 120 && height > 120) {
+        setChartSize(current => current.width === width && current.height === height ? current : { width, height })
+      }
+    })
+    observer.observe(chartRef.current)
+    return () => observer.disconnect()
+  }, [])
+
   useEffect(() => {
     const margin = { top: 20, right: 25, bottom: 70, left: 65 }
-    const width = 700 - margin.left - margin.right
-    const height = 400 - margin.top - margin.bottom
-    const svg = d3.select(chartRef.current).attr('viewBox', '0 0 700 400')
+    const width = chartSize.width - margin.left - margin.right
+    const height = chartSize.height - margin.top - margin.bottom
+    const svg = d3.select(chartRef.current).attr('viewBox', `0 0 ${chartSize.width} ${chartSize.height}`)
     svg.selectAll('*').remove()
     const chart = svg.append('g').attr('transform', `translate(${margin.left}, ${margin.top})`)
     const x = d3.scaleLinear().domain([Math.min(0, d3.min(points, d => d[indicator])), Math.max(0, d3.max(points, d => d[indicator]))]).nice().range([0, width])
@@ -75,10 +90,11 @@ export default function CountryChangeChart({ initialIndicator = 'gdp', onExplore
     chart.append('text').attr('transform', 'rotate(-90)')
       .attr('x', -height / 2).attr('y', -48)
       .attr('text-anchor', 'middle').text('Fertility change (%)')
-  }, [indicator, points])
+  }, [indicator, points, chartSize])
 
   return (
     <section className="chart-card">
+      <div className="chart-top">
       <p>Each dot compares one economy at the start and end of {period}.</p>
       <p className="selection-note">Shaded area: {indicator === 'mortality' ? 'mortality and fertility both fell.' : indicator === 'gdp' ? 'income rose while fertility fell.' : 'enrollment rose while fertility fell.'}</p>
       <label>Compare fertility change with:{' '}
@@ -91,6 +107,7 @@ export default function CountryChangeChart({ initialIndicator = 'gdp', onExplore
           <option value="education">Female enrollment change (percentage points)</option>
         </select>
       </label>
+      </div>
       <svg ref={chartRef} role="img" aria-label={`${period} economy changes: fertility and ${indicator}`} />
       <div className="chart-tooltip" aria-hidden="true" />
       <p className="chart-readout" aria-live="polite">Hover or focus a mark to see its exact values.</p>
