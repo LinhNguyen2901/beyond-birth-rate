@@ -20,6 +20,7 @@ const spreads = {
 export default function PeerHistoryChart() {
   const chartRef = useRef(null)
   const [selectedCountry, setSelectedCountry] = useState('CAF')
+  const [chartWidth, setChartWidth] = useState(700)
   const countries = useMemo(() => {
     const chosen = choices.find(d => d.iso3 === selectedCountry)
     const peers = choices.filter(d => d.iso3 !== selectedCountry && d.region === chosen.region)
@@ -43,10 +44,16 @@ export default function PeerHistoryChart() {
   }, [selectedCountry])
 
   useEffect(() => {
+    const observer = new ResizeObserver(entries => setChartWidth(Math.round(entries[0].contentRect.width)))
+    observer.observe(chartRef.current)
+    return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
     const margin = { top: 20, right: 25, bottom: 55, left: 65 }
-    const width = 700 - margin.left - margin.right
+    const width = chartWidth - margin.left - margin.right
     const height = 380 - margin.top - margin.bottom
-    const svg = d3.select(chartRef.current).attr('viewBox', '0 0 700 380')
+    const svg = d3.select(chartRef.current).attr('viewBox', `0 0 ${chartWidth} 380`)
     svg.selectAll('*').remove()
     const chart = svg.append('g').attr('transform', `translate(${margin.left}, ${margin.top})`)
 
@@ -57,7 +64,7 @@ export default function PeerHistoryChart() {
     chart.append('g').attr('class', 'grid')
       .call(d3.axisLeft(y).ticks(4).tickSize(-width).tickFormat(''))
     chart.append('g').attr('transform', `translate(0, ${height})`)
-      .call(d3.axisBottom(x).tickValues([2001, 2005, 2010, 2015, 2020, 2023]))
+      .call(d3.axisBottom(x).tickValues(chartWidth < 500 ? [2001, 2010, 2023] : [2001, 2005, 2010, 2015, 2020, 2023]))
     chart.append('g').call(d3.axisLeft(y).ticks(4))
 
     const lines = chart.selectAll('.peer-line').data(countries).join('path')
@@ -85,7 +92,7 @@ export default function PeerHistoryChart() {
     chart.append('text').attr('transform', 'rotate(-90)')
       .attr('x', -height / 2).attr('y', -48)
       .attr('text-anchor', 'middle').text('Births per woman')
-  }, [countries, selectedCountry])
+  }, [countries, selectedCountry, chartWidth])
 
   return (
     <section className="chart-card">
@@ -98,24 +105,19 @@ export default function PeerHistoryChart() {
           </select>
         </label>
       </div>
-      <div className="peer-legend">
-        {countries.map((d, index) => <span key={d.iso3}><i style={{ borderColor: d.color, borderTopStyle: d.dash ? 'dashed' : 'solid' }} />{d.start.country}{index === 0 && ' (chosen)'}</span>)}
-      </div>
-      <p className="peer-mobile-cue">Swipe sideways to see the full chart. Use the legend to match each line to an economy.</p>
-      <svg ref={chartRef} role="img" aria-label={`Fertility histories for ${countries[0].start.country} and ${countries.length - 1} nearby peers, 2001 to 2023`} />
-      <div className="chart-tooltip" aria-hidden="true" />
-      <p className="chart-readout" aria-live="polite">Hover or focus a line to see its endpoint values.</p>
-      <p className="peer-mobile-cue peer-table-cue">Swipe the table sideways to see all starting values.</p>
-      <div className="table-wrap" tabIndex="0" role="region" aria-label="Measured starting conditions table, scroll horizontally for more columns">
-        <table>
-          <caption>Measured starting conditions in 2001</caption>
-          <thead><tr><th>Economy</th><th>GDP/person ($)</th><th>Under-five deaths/1,000</th><th>Female enrollment (%)</th><th>Fertility</th></tr></thead>
-          <tbody>{countries.map((d, index) => <tr key={d.iso3}>
-            <th><span className="legend-swatch" style={{ background: d.color }} />{d.start.country}{index === 0 && ' (chosen)'}</th>
-            <td>{Math.round(d.start.gdp_pc).toLocaleString()}</td><td>{d.start.mortality.toFixed(1)}</td>
-            <td>{d.start.education.toFixed(1)}</td><td>{d.start.fertility.toFixed(2)}</td>
-          </tr>)}</tbody>
-        </table>
+      <div className="peer-main">
+        <div className="peer-plot">
+          <svg ref={chartRef} role="img" aria-label={`Fertility histories for ${countries[0].start.country} and ${countries.length - 1} nearby peers, 2001 to 2023`} />
+          <div className="chart-tooltip" aria-hidden="true" />
+          <p className="chart-readout" aria-live="polite">Hover or focus a line to see its endpoint values.</p>
+        </div>
+        <div className="peer-values">
+          <h3>Starting conditions <span>2001</span></h3>
+          {countries.map((d, index) => <div className="peer-value" key={d.iso3}>
+            <strong><i style={{ borderColor: d.color, borderTopStyle: d.dash ? 'dashed' : 'solid' }} />{d.start.country}{index === 0 && ' (chosen)'}</strong>
+            <div><span>Income <b>${Math.round(d.start.gdp_pc).toLocaleString()}</b></span><span>Under-5 /1k <b>{d.start.mortality.toFixed(1)}</b></span><span>Enrollment <b>{d.start.education.toFixed(1)}%</b></span><span>Fertility <b>{d.start.fertility.toFixed(2)}</b></span></div>
+          </div>)}
+        </div>
       </div>
       <p className="chart-source">Peers share the chosen economy's World Bank region and are closest on 2001 log GDP per person, under-five mortality, and female secondary enrollment after scaling each measure. Choices: 124 economies with all three measures in 2001. Fertility paths: 2001–2023 main sample. Similar measured values do not imply identical circumstances. Source: World Bank WDI.</p>
     </section>

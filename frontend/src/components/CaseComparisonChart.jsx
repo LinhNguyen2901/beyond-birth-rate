@@ -81,8 +81,19 @@ const measures = [
 
 export default function CaseComparisonChart() {
   const [caseIndex, setCaseIndex] = useState(0)
+  const [chartWidth, setChartWidth] = useState(520)
   const chartsRef = useRef(null)
   const pair = shortlist[caseIndex]
+
+  useEffect(() => {
+    const chart = chartsRef.current?.querySelector('svg')
+    if (!chart) return
+    const observer = new ResizeObserver(entries => {
+      if (entries[0].contentRect.width > 0) setChartWidth(Math.round(entries[0].contentRect.width))
+    })
+    observer.observe(chart)
+    return () => observer.disconnect()
+  }, [])
 
   useEffect(() => {
     if (!pair) return
@@ -90,8 +101,8 @@ export default function CaseComparisonChart() {
 
     d3.select(chartsRef.current).selectAll('svg').each(function (_, index) {
       const measure = measures[index]
-      const width = 520
-      const height = 300
+      const width = chartWidth
+      const height = 210
       const margin = { top: 14, right: 18, bottom: 42, left: 64 }
       const plotWidth = width - margin.left - margin.right
       const plotHeight = height - margin.top - margin.bottom
@@ -111,7 +122,7 @@ export default function CaseComparisonChart() {
       chart.append('g').attr('class', 'grid')
         .call(d3.axisLeft(y).tickValues(yTicks).tickSize(-plotWidth).tickFormat(''))
       chart.append('g').attr('transform', `translate(0, ${plotHeight})`)
-        .call(d3.axisBottom(x).tickValues([2001, 2010, 2020, 2023]).tickFormat(d3.format('d')))
+        .call(d3.axisBottom(x).tickValues(width < 400 ? [2001, 2012, 2023] : [2001, 2010, 2020, 2023]).tickFormat(d3.format('d')))
       chart.append('g').call(d3.axisLeft(y).tickValues(yTicks).tickFormat(measure.key === 'gdp_pc' ? d3.format('~s') : d3.format('~f')))
 
       histories.forEach((history, countryIndex) => {
@@ -139,7 +150,7 @@ export default function CaseComparisonChart() {
         )
       })
     })
-  }, [pair])
+  }, [pair, chartWidth])
 
   if (!pair) return null
 

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import * as d3 from 'd3'
 import scoreData from '../data/model_scores.json'
 import { addTooltip } from '../chartTooltip'
@@ -28,12 +28,20 @@ const improvement = Math.round((1 - full.mae / baseline.mae) * 100)
 
 export default function ModelComparisonChart() {
   const chartRef = useRef(null)
+  const [chartWidth, setChartWidth] = useState(760)
 
   useEffect(() => {
-    const margin = { top: 18, right: 48, bottom: 58, left: 205 }
-    const width = 760 - margin.left - margin.right
+    const observer = new ResizeObserver(entries => setChartWidth(Math.round(entries[0].contentRect.width)))
+    observer.observe(chartRef.current)
+    return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
+    const compact = chartWidth < 500
+    const margin = { top: 18, right: compact ? 26 : 48, bottom: 58, left: compact ? 145 : 205 }
+    const width = chartWidth - margin.left - margin.right
     const height = 365 - margin.top - margin.bottom
-    const svg = d3.select(chartRef.current).attr('viewBox', '0 0 760 365')
+    const svg = d3.select(chartRef.current).attr('viewBox', `0 0 ${chartWidth} 365`)
     svg.selectAll('*').remove()
     const chart = svg.append('g').attr('transform', `translate(${margin.left}, ${margin.top})`)
 
@@ -43,9 +51,9 @@ export default function ModelComparisonChart() {
 
     chart.append('g').attr('class', 'grid')
       .attr('transform', `translate(0, ${height})`)
-      .call(d3.axisBottom(x).ticks(5).tickSize(-height).tickFormat(''))
+      .call(d3.axisBottom(x).ticks(compact ? 3 : 5).tickSize(-height).tickFormat(''))
     chart.append('g').attr('transform', `translate(0, ${height})`)
-      .call(d3.axisBottom(x).ticks(5))
+      .call(d3.axisBottom(x).ticks(compact ? 3 : 5))
     chart.append('g').call(d3.axisLeft(y).tickFormat(name => labels[name]))
 
     const bars = chart.selectAll('rect').data(scores).join('rect')
@@ -60,9 +68,9 @@ export default function ModelComparisonChart() {
 
     // The full row is the hover target, as in the D3 tutorial example.
     const hits = chart.selectAll('.bar-hit').data(scores).join('rect')
-      .attr('class', 'bar-hit').attr('x', -200)
+      .attr('class', 'bar-hit').attr('x', -margin.left + 5)
       .attr('y', d => y(d.name) - 5)
-      .attr('width', width + 245).attr('height', y.step())
+      .attr('width', width + margin.left + margin.right - 5).attr('height', y.step())
       .attr('fill', 'transparent').attr('pointer-events', 'all')
       .attr('tabindex', 0)
       .attr('aria-label', d => `${labels[d.name]}: average prediction miss ${d.mae.toFixed(3)} births per woman`)
@@ -75,31 +83,37 @@ export default function ModelComparisonChart() {
     )
 
     chart.append('text').attr('x', width / 2).attr('y', height + 48)
-      .attr('text-anchor', 'middle').text('Average prediction miss (births per woman)')
-  }, [])
+      .attr('text-anchor', 'middle').text(compact ? 'Average miss (births per woman)' : 'Average prediction miss (births per woman)')
+  }, [chartWidth])
 
   return (
     <section className="chart-card model-card">
       <h2>How close are the predictions?</h2>
       <p>Imagine predicting fertility for an economy the model has never seen. Each bar shows how far its predictions were from the actual birth rate, on average. <strong>Shorter bars are better.</strong></p>
-      <div className="model-takeaway">
-        <div>
-          <span>The main result</span>
-          <strong>{improvement}% less error</strong>
-          <p>Using income, child mortality, and education together roughly halves the average miss compared with guessing the median fertility rate.</p>
+      <div className="model-main">
+        <div className="model-explainer">
+          <div className="model-takeaway">
+            <div>
+              <span>The main result</span>
+              <strong>{improvement}% less error</strong>
+              <p>Using income, child mortality, and education together roughly halves the average miss compared with guessing the median fertility rate.</p>
+            </div>
+            <div className="model-before-after">
+              <span>Median guess <strong>{baseline.mae.toFixed(2)}</strong></span>
+              <span>All three measures <strong>{full.mae.toFixed(2)}</strong></span>
+              <small>Births per woman off, on average</small>
+            </div>
+          </div>
+          <p className="model-note">Leaving out income barely changes the error here. Leaving out child mortality increases it the most. This describes this model's predictions; it does not tell us what causes fertility to change.</p>
         </div>
-        <div className="model-before-after">
-          <span>Median guess <strong>{baseline.mae.toFixed(2)}</strong></span>
-          <span>All three measures <strong>{full.mae.toFixed(2)}</strong></span>
-          <small>Births per woman off, on average</small>
+        <div className="model-plot">
+          <h3>What if we leave one measure out?</h3>
+          <p>The bottom three bars use the color of the measure left out. Compare each with the navy bar to see how the error changes.</p>
+          <svg ref={chartRef} role="img" aria-label="Model errors for baseline and indicator combinations" />
+          <div className="chart-tooltip" aria-hidden="true" />
+          <p className="chart-readout" aria-live="polite">Hover or focus a mark to see its exact values.</p>
         </div>
       </div>
-      <h3>What if we leave one measure out?</h3>
-      <p>The bottom three bars use the color of the measure left out. Compare each with the navy bar to see how the error changes.</p>
-      <svg ref={chartRef} role="img" aria-label="Model errors for baseline and indicator combinations" />
-      <div className="chart-tooltip" aria-hidden="true" />
-      <p className="chart-readout" aria-live="polite">Hover or focus a mark to see its exact values.</p>
-      <p className="model-note">Leaving out income barely changes the error here. Leaving out child mortality increases it the most. This describes this model's predictions; it does not tell us what causes fertility to change.</p>
       <p className="chart-source">2001–2023 rows with all four measures available. Error is the average absolute difference between predicted and actual births per woman. Five evaluation rounds each hold out entire economies. Source: World Bank WDI.</p>
     </section>
   )
