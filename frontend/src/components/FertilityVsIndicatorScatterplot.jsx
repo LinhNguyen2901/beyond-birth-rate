@@ -7,12 +7,15 @@ import { measureColors } from '../chartColors'
 
 // Use all years for the axis ranges so points stay comparable as the year changes.
 const gdpRange = d3.extent(data, d => d.gdp_pc)
-const mortalityMax = d3.max(data, d => d.mortality)
+// The highest value is 332.4; leave room around it without stretching to 500.
+const mortalityMax = 400
 const fertilityMax = d3.max(data, d => d.fertility)
 const educationMax = d3.max(educationData, d => d.education)
 const historyCountries = new Set(data.map(d => d.iso3))
 
-export default function FertilityVsIndicatorScatterplot({ selectedCountry, onCountrySelect, initialYear = 2024, initialIndicator = 'gdp_pc' }) {
+const measureNames = { gdp_pc: 'GDP per person', mortality: 'child mortality', education: 'female secondary enrollment' }
+
+export default function FertilityVsIndicatorScatterplot({ selectedCountry, onCountrySelect, initialYear = 2024, initialIndicator = 'gdp_pc', onExplore }) {
   const chartRef = useRef(null)
   const [year, setYear] = useState(initialYear)
   const [indicator, setIndicator] = useState(initialIndicator)
@@ -117,7 +120,7 @@ Under-five mortality: ${d.mortality.toFixed(1)} per 1,000`
         Year: {year}{' '}
         <span className="range-end">{firstYear}</span>
         <input type="range" min={firstYear} max={lastYear} value={year}
-          onChange={e => { setPlaying(false); setYear(Number(e.target.value)) }} />
+          onChange={e => { setPlaying(false); setYear(Number(e.target.value)); onExplore?.(measureNames[indicator]) }} />
         <span className="range-end">{lastYear}</span>
       </label>
 
@@ -125,6 +128,7 @@ Under-five mortality: ${d.mortality.toFixed(1)} per 1,000`
         Compare with:{' '}
         <select value={indicator} onChange={e => {
           const next = e.target.value
+          onExplore?.(measureNames[next])
           setPlaying(false)
           if (next === 'education') setYear(current => Math.max(2001, Math.min(2023, current)))
           setIndicator(next)
@@ -136,10 +140,11 @@ Under-five mortality: ${d.mortality.toFixed(1)} per 1,000`
       </label>
       {isEducation && <p className="coverage-note">{points.length} economies in {year} · separate education sample, 2001–2023</p>}
 
-      <button type="button" onClick={() => setPlaying(value => !value)}>
+      <button type="button" onClick={() => { onExplore?.(measureNames[indicator]); setPlaying(value => !value) }}>
         {playing ? 'Pause years' : 'Play years'}
       </button>
       <button type="button" className="secondary-button" onClick={() => {
+        onExplore?.(measureNames.gdp_pc)
         setPlaying(false)
         setYear(2024)
         setIndicator('gdp_pc')

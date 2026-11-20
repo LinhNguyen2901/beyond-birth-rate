@@ -11,8 +11,8 @@ const educationTrend = d3.rollups(educationData, rows => d3.median(rows, d => d.
 
 const measures = [
   { key: 'fertility', title: 'Fertility', unit: 'Births per woman', color: measureColors.fertility },
-  { key: 'mortality', title: 'Under-five mortality', unit: 'Deaths per 1,000 live births', color: measureColors.mortality },
   { key: 'gdp_pc', title: 'GDP per person', unit: 'Constant 2015 US$', color: measureColors.gdp_pc },
+  { key: 'mortality', title: 'Under-five mortality', unit: 'Deaths per 1,000 live births', color: measureColors.mortality },
   { key: 'education', title: 'Female secondary enrollment', unit: 'Gross enrollment (%)', color: measureColors.education },
 ]
 

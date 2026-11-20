@@ -66,7 +66,7 @@ export default function App() {
           { title: 'Look at child survival.', indicator: 'mortality', year: 2024, text: 'Switch to child mortality. Economies with more deaths among young children generally also have higher fertility. This is an association across economies.', detail: '2024 · Under-five mortality' },
           { title: 'Education adds another view.', indicator: 'education', year: 2023, text: 'Higher female secondary enrollment often appears alongside lower fertility. This view has a different sample: education data are not available for every economy and year.', detail: '2023 · Separate education sample' },
         ]}>
-          {step => <FertilityVsIndicatorScatterplot selectedCountry={selectedCountry} onCountrySelect={setSelectedCountry} initialYear={step.year} initialIndicator={step.indicator} />}
+          {(step, onExplore) => <FertilityVsIndicatorScatterplot selectedCountry={selectedCountry} onCountrySelect={setSelectedCountry} initialYear={step.year} initialIndicator={step.indicator} onExplore={onExplore} />}
         </ScrollStory>
       </section>
 
@@ -86,15 +86,15 @@ export default function App() {
           <span className="section-number">04</span>
           <div>
             <h2 id="section-4">Did they change together?</h2>
-            <p>How did fertility change alongside mortality, income, or education? Positive values mean an increase; negative values mean a decrease.</p>
+            <p>How did fertility change alongside income, mortality, or education? Positive values mean an increase; negative values mean a decrease.</p>
           </div>
         </div>
         <ScrollStory steps={[
-          { title: 'Falling mortality, different fertility paths.', indicator: 'mortality', text: 'Economies with bigger percentage declines in child mortality only weakly tended to have bigger percentage declines in fertility. The wide spread shows that the two did not change closely together everywhere.', detail: 'Takeaway ? A weak relationship, with many exceptions' },
-          { title: 'Income growth is a weak guide.', indicator: 'gdp', text: 'Bigger income gains only weakly tended to go with bigger fertility declines. Knowing how much an economy grew tells us little about how far its fertility fell.', detail: 'Takeaway ? More growth does not reliably mean a bigger fertility drop' },
-          { title: 'Education gains show a clearer pattern.', indicator: 'education', text: 'Economies with bigger gains in female secondary enrollment tended to see larger percentage declines in fertility. This pattern is clearer than the income comparison, but countries still differ substantially.', detail: 'Takeaway ? Bigger enrollment gains often accompanied bigger fertility declines' },
+          { title: 'Income growth is a weak guide.', indicator: 'gdp', text: 'Bigger income gains only weakly tended to go with bigger fertility declines. Knowing how much an economy grew tells us little about how far its fertility fell.', detail: 'Takeaway · More growth does not reliably mean a bigger fertility drop' },
+          { title: 'Falling mortality, different fertility paths.', indicator: 'mortality', text: 'Economies with bigger percentage declines in child mortality only weakly tended to have bigger percentage declines in fertility. The wide spread shows that the two did not change closely together everywhere.', detail: 'Takeaway · A weak relationship, with many exceptions' },
+          { title: 'Education gains show a clearer pattern.', indicator: 'education', text: 'Economies with bigger gains in female secondary enrollment tended to see larger percentage declines in fertility. This pattern is clearer than the income comparison, but countries still differ substantially.', detail: 'Takeaway · Bigger enrollment gains often accompanied bigger fertility declines' },
         ]}>
-          {step => <CountryChangeChart initialIndicator={step.indicator} />}
+          {(step, onExplore) => <CountryChangeChart initialIndicator={step.indicator} onExplore={onExplore} />}
         </ScrollStory>
       </section>
 

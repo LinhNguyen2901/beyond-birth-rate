@@ -23,6 +23,8 @@
 .story-stage-nav button { width: 29px; height: 29px; margin-left: 6px; border: 1px solid #cbdcdd; border-radius: 50%; color: #52677b; background: white; cursor: pointer; }
 .story-stage-nav button[aria-pressed='true'] { background: #1a7774; color: white; border-color: #1a7774; }
 .story-stage-nav button:focus-visible { outline: 2px solid #d66a4f; outline-offset: 3px; }
+.story-stage-nav .resume-story, .step-copy .resume-story { width: auto; height: auto; padding: 7px 10px; border-radius: 7px; background: #17324a; color: #fff; font-size: 12px; }
+.step-copy .resume-story { margin-top: 18px; }
 .story-view-label { display: flex; align-items: center; gap: 16px; padding: 13px 18px; background: #17324a; color: #fff; border-radius: 12px 12px 0 0; }
 .story-view-label span { flex: none; color: #99d9cc; font-size: 11px; font-weight: 700; letter-spacing: .08em; }
 .story-view-label strong { font-size: 15px; font-weight: 600; }

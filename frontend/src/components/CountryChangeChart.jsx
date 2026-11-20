@@ -28,7 +28,7 @@ const educationChanges = educationData.filter(d => d.year === 2001 && educationE
     }
   })
 
-export default function CountryChangeChart({ initialIndicator = 'mortality' }) {
+export default function CountryChangeChart({ initialIndicator = 'gdp', onExplore }) {
   const chartRef = useRef(null)
   const [indicator, setIndicator] = useState(initialIndicator)
   const points = indicator === 'education' ? educationChanges : changes
@@ -83,9 +83,12 @@ export default function CountryChangeChart({ initialIndicator = 'mortality' }) {
       <p>Each dot compares one economy at the start and end of {period}.</p>
       <p className="selection-note">Shaded area: {indicator === 'mortality' ? 'mortality and fertility both fell.' : indicator === 'gdp' ? 'income rose while fertility fell.' : 'enrollment rose while fertility fell.'}</p>
       <label>Compare fertility change with:{' '}
-        <select value={indicator} onChange={e => setIndicator(e.target.value)}>
-          <option value="mortality">Child mortality change (%)</option>
+        <select value={indicator} onChange={e => {
+          setIndicator(e.target.value)
+          onExplore?.(e.target.options[e.target.selectedIndex].text)
+        }}>
           <option value="gdp">GDP per person change (%)</option>
+          <option value="mortality">Child mortality change (%)</option>
           <option value="education">Female enrollment change (percentage points)</option>
         </select>
       </label>

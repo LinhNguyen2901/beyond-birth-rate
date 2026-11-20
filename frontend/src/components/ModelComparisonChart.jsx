@@ -1,8 +1,11 @@
 import { useEffect, useRef } from 'react'
 import * as d3 from 'd3'
-import scores from '../data/model_scores.json'
+import scoreData from '../data/model_scores.json'
 import { addTooltip } from '../chartTooltip'
 import { measureColors, selectionColor } from '../chartColors'
+
+const scores = ['Median baseline', 'All three indicators', 'Without GDP', 'Without mortality', 'Without education']
+  .map(name => scoreData.find(d => d.name === name))
 
 const colors = {
   'Median baseline': '#8297a8',
