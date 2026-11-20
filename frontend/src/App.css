@@ -246,16 +246,20 @@
 .case-study .case-card { margin-top: 14px; }
 
 .case-card { border-color: #d7e6e3; }
-.case-card > label { margin-top: 22px; }
+.case-card > label { margin-top: 12px; }
 .case-card > label select { max-width: 360px; }
-.case-summary { display: flex; align-items: baseline; flex-wrap: wrap; gap: 12px; margin-top: 20px; padding: 14px 18px; border-radius: 10px; background: #f1f8f7; color: #314b60; }
-.case-summary strong { color: #17324a; font-size: 20px; }
+.case-summary { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px 14px; margin-top: 12px; padding: 8px 12px; border-radius: 10px; background: #f1f8f7; color: #314b60; }
+.case-summary strong { color: #17324a; font-size: 17px; }
 .case-summary small { color: #52677b; font-size: 13px; font-weight: 400; }
-.case-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 16px; }
-.case-panel { min-width: 0; padding: 12px 14px; border: 1px solid #e2e9ef; border-radius: 12px; background: #fcfdfd; }
+.case-card .peer-legend { margin-top: 10px; }
+.case-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(2, minmax(0, 1fr)); gap: 12px; height: min(78svh, 720px); margin-top: 10px; }
+.case-panel { display: flex; flex-direction: column; min-width: 0; min-height: 0; padding: 12px 14px; border: 1px solid #e2e9ef; border-radius: 12px; background: #fcfdfd; }
 .case-panel h3 { margin: 0 0 3px; color: #17324a; font-size: 17px; }
 .case-panel > p:first-of-type { color: #718398; font-size: 12px; }
-.case-panel svg { max-width: none; margin-top: 4px; }
+.case-panel svg { flex: 1; min-height: 0; height: 0; max-width: none; margin-top: 4px; }
+.case-method { margin-top: 10px; color: #718398; font-size: 12px; }
+.case-method summary { width: fit-content; cursor: pointer; }
+.case-method p { margin-top: 8px; font-size: 12px; }
 
 .model-card > p:first-of-type { max-width: 750px; }
 .model-main { display: grid; grid-template-columns: minmax(300px, .75fr) minmax(0, 1.25fr); align-items: center; gap: 28px; margin-top: 22px; }
@@ -279,7 +283,9 @@
   .peer-values h3, .peer-missing-note { grid-column: 1 / -1; }
 }
 @media (max-width: 800px) {
-  .case-grid { grid-template-columns: 1fr; }
+  .case-grid { grid-template-columns: 1fr; grid-template-rows: auto; height: auto; }
+  .case-panel { display: block; }
+  .case-panel svg { height: auto; }
 }
 
 .overview-grid { display: grid; grid-template-columns: 1.15fr 1fr; gap: 28px; }

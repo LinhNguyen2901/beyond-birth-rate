@@ -81,7 +81,7 @@ const measures = [
 
 export default function CaseComparisonChart() {
   const [caseIndex, setCaseIndex] = useState(0)
-  const [chartWidth, setChartWidth] = useState(520)
+  const [chartSize, setChartSize] = useState({ width: 520, height: 210 })
   const chartsRef = useRef(null)
   const pair = shortlist[caseIndex]
 
@@ -89,7 +89,11 @@ export default function CaseComparisonChart() {
     const chart = chartsRef.current?.querySelector('svg')
     if (!chart) return
     const observer = new ResizeObserver(entries => {
-      if (entries[0].contentRect.width > 0) setChartWidth(Math.round(entries[0].contentRect.width))
+      const width = Math.round(entries[0].contentRect.width)
+      const height = window.innerWidth <= 800 ? 210 : Math.round(entries[0].contentRect.height)
+      if (width > 0 && height > 120) {
+        setChartSize(current => current.width === width && current.height === height ? current : { width, height })
+      }
     })
     observer.observe(chart)
     return () => observer.disconnect()
@@ -101,9 +105,8 @@ export default function CaseComparisonChart() {
 
     d3.select(chartsRef.current).selectAll('svg').each(function (_, index) {
       const measure = measures[index]
-      const width = chartWidth
-      const height = 210
-      const margin = { top: 14, right: 18, bottom: 42, left: 64 }
+      const { width, height } = chartSize
+      const margin = { top: 8, right: 18, bottom: 30, left: 64 }
       const plotWidth = width - margin.left - margin.right
       const plotHeight = height - margin.top - margin.bottom
       const svg = d3.select(this).attr('viewBox', `0 0 ${width} ${height}`)
@@ -150,14 +153,13 @@ export default function CaseComparisonChart() {
         )
       })
     })
-  }, [pair, chartWidth])
+  }, [pair, chartSize])
 
   if (!pair) return null
 
   return (
     <section className="chart-card case-card">
       <h2>How these pairs changed</h2>
-      <p>We chose these pairs because their fertility rates grew apart. They are unusual examples, not a typical outcome.</p>
       <label>Choose a pair
         <select value={caseIndex} onChange={e => setCaseIndex(Number(e.target.value))}>
           {shortlist.map((item, index) =>
@@ -167,11 +169,12 @@ export default function CaseComparisonChart() {
       </label>
       <div className="case-summary">
         <span>Fertility gap</span>
-        <strong>{pair.startGap.toFixed(2)} <small>in 2001</small> → {pair.endGap.toFixed(2)} <small>in 2023</small></strong>
+        <strong>{pair.startGap.toFixed(2)} → {pair.endGap.toFixed(2)}</strong>
+        <small>2001 → 2023</small>
       </div>
       <div className="peer-legend">
         {pair.names.map((name, index) =>
-          <span key={name}><i style={{ borderColor: '#17324a', borderTopStyle: index === 0 ? 'solid' : 'dashed' }} />{name} ({index === 0 ? 'solid' : 'dashed'})</span>
+          <span key={name}><i style={{ borderColor: '#17324a', borderTopStyle: index === 0 ? 'solid' : 'dashed' }} />{name}</span>
         )}
       </div>
       <div className="case-grid" ref={chartsRef}>
@@ -185,7 +188,10 @@ export default function CaseComparisonChart() {
           </div>
         )}
       </div>
-      <p className="chart-source">From {rows.length} eligible countries, {shortlist.length} pairs met these rules: scaled distance ≤ 0.35 across income, mortality, and education in 2001 and 2023; starting fertility gap ≤ 0.5; gap growth ≥ 0.5. Fertility was excluded from the similarity score. Axes stay fixed; GDP uses a log scale. Source: World Bank WDI.</p>
+      <details className="case-method">
+        <summary>How were these pairs chosen?</summary>
+        <p>From {rows.length} eligible countries, {shortlist.length} pairs met these rules: scaled distance ≤ 0.35 across income, mortality, and education in 2001 and 2023; starting fertility gap ≤ 0.5; gap growth ≥ 0.5. Fertility was excluded from the similarity score. Axes stay fixed; GDP uses a log scale. Source: World Bank WDI.</p>
+      </details>
     </section>
   )
 }

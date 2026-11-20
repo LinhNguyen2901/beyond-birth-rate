@@ -106,7 +106,6 @@ export default function App() {
           <span className="section-number">06</span>
           <div>
             <h2 id="section-6">How well can we predict fertility?</h2>
-            <p>We tested the predictions on countries the model had never seen.</p>
           </div>
         </div>
         <ModelComparisonChart />
