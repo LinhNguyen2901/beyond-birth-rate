@@ -16,7 +16,7 @@ const colors = {
 }
 
 const labels = {
-  'Median baseline': 'Same guess for everyone',
+  'Median baseline': 'Median guess',
   'All three indicators': 'Use all three measures',
   'Without GDP': 'Leave out income',
   'Without education': 'Leave out education',
@@ -88,32 +88,24 @@ export default function ModelComparisonChart() {
 
   return (
     <section className="chart-card model-card">
-      <p>Each bar shows the average prediction miss. A miss of 0.5 is like predicting 2.5 births per woman when the actual rate is 2.0. <strong>Shorter bars mean closer predictions; zero would be perfect.</strong></p>
       <div className="model-main">
-        <div className="model-explainer">
+        <div className="model-left">
           <div className="model-takeaway">
             <div>
-              <span>The main result</span>
+              <span>Main result</span>
               <strong>{improvement}% smaller misses</strong>
-              <p>Using income, child mortality, and enrollment roughly halves the average miss compared with giving every country the same guess: the middle fertility rate (median) in the training data.</p>
-            </div>
-            <div className="model-before-after">
-              <span>Same guess for everyone <strong>{baseline.mae.toFixed(2)}</strong></span>
-              <span>All three measures <strong>{full.mae.toFixed(2)}</strong></span>
-              <small>Births per woman off, on average</small>
+              <p>Using all three measures instead of one median guess for every country.</p>
             </div>
           </div>
-          <p className="model-note">These measures help, but predictions still miss by about {full.mae.toFixed(2)} births per woman on average. Some misses are larger. This does not show what causes fertility to change.</p>
+          <p className="chart-source model-source">World Bank WDI, 2001–2023; complete records only. Random forest tested on held-out countries in five rounds.</p>
         </div>
         <div className="model-plot">
-          <h3>What if we leave one measure out?</h3>
-          <p>A longer bar means predictions got worse without that measure. Leaving out mortality or education increases the miss; leaving out income barely changes it.</p>
-          <svg ref={chartRef} role="img" aria-label={`Average prediction miss in births per woman: ${baseline.mae.toFixed(2)} with the same guess for everyone, versus ${full.mae.toFixed(2)} using income, child mortality, and education. The last three bars leave out one measure each. Shorter bars are better.`} />
+          <h3>Shorter bars mean better predictions</h3>
+          <svg ref={chartRef} role="img" aria-label={`Average prediction miss in births per woman: ${baseline.mae.toFixed(2)} when predicting the training data's median fertility rate for every country, versus ${full.mae.toFixed(2)} using income, child mortality, and education. The last three bars leave out one measure each. Shorter bars are better.`} />
           <div className="chart-tooltip" aria-hidden="true" />
           <p className="chart-readout" aria-live="polite">Hover or focus a mark to see its exact values.</p>
         </div>
       </div>
-      <p className="chart-source">Model: random forest, which combines many decision trees. Five test rounds, each using countries excluded from training. Data: 2001–2023 records with all three measures and fertility available. Source: World Bank WDI.</p>
     </section>
   )
 }

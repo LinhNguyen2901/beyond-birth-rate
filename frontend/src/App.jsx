@@ -30,7 +30,7 @@ export default function App() {
           <span className="section-number">01</span>
           <div>
             <h2 id="section-1">How the world has changed</h2>
-            <p>In this sample, fertility and child mortality fell while income and enrollment rose.</p>
+            <p>Each line shows the median for each year.</p>
           </div>
         </div>
         <MedianTrends />
@@ -96,8 +96,7 @@ export default function App() {
         <div className="section-intro">
           <span className="section-number">06</span>
           <div>
-            <h2 id="section-6">How close were the predictions?</h2>
-            <p>We tested predictions on countries the model had not trained on.</p>
+            <h2 id="section-6">How well did the model do?</h2>
           </div>
         </div>
         <ModelComparisonChart />

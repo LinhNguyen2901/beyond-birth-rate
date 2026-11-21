@@ -103,12 +103,7 @@ function TrendChart({ measure }) {
 export default function MedianTrends() {
   return (
     <div className="median-overview">
-      <div className="median-coverage">
-        <span>Fertility, income, mortality: same 182 countries · 1990–2024</span>
-        <span>Education: countries with data each year · 2001–2023</span>
-      </div>
       <div className="median-grid">{measures.map(measure => <TrendChart key={measure.key} measure={measure} />)}</div>
-      <p className="median-source">Each line shows the median country value for that year. Countries have equal weight; gross enrollment can exceed 100%. Source: World Bank WDI.</p>
     </div>
   )
 }
