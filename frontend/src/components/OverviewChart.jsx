@@ -115,7 +115,7 @@ export default function OverviewChart({ selectedCountry, onCountrySelect }) {
       <div className="overview-grid">
         <div>
           <h2>A &nbsp; Across countries</h2>
-          <p>{year} · 182 countries · one dot per country</p>
+          <p>{year} · 182 countries</p>
           <label>Year: {year} <input type="range" min="1990" max="2024" value={year}
             onChange={e => setYear(Number(e.target.value))} /></label>
           <svg ref={scatterRef} role="img" aria-label={`${year} fertility versus GDP per person across countries`} />
@@ -163,12 +163,10 @@ export default function OverviewChart({ selectedCountry, onCountrySelect }) {
               <svg ref={educationRef} role="img" aria-label={`Female secondary enrollment history for ${country?.country}`} />
               <div className="chart-tooltip" aria-hidden="true" />
               {educationCount > 0 && <p className="chart-readout" aria-live="polite">Hover or focus for exact values.</p>}
-              <p className="history-note">{educationCount} observations. Gross enrollment can exceed 100%.</p>
             </div>
           </div>
         </div>
       </div>
-      <p className="chart-source">The axes stay fixed across countries. Source: World Bank WDI.</p>
     </section>
   )
 }

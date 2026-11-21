@@ -19,7 +19,7 @@ export default function App() {
       <header className="intro">
         <div className="eyebrow">World Bank data · 1990–2024</div>
         <h1>Beyond the Birth Rate</h1>
-        <p>Explore how fertility changed alongside income, child survival, and education.</p>
+        <p>Reading Hans Rosling’s <cite>Factfulness</cite> made me wonder: if life gets better, why do families often have fewer children? I looked for patterns and exceptions across 182 countries.</p>
         <p className="interaction-hint">Hover or focus charts for exact values.</p>
         <a className="story-start" href="#section-1">Follow the story <span aria-hidden="true">↓</span></a>
         <div className="intro-facts"><span><strong>182</strong> countries</span><span><strong>6</strong> chapters</span></div>
@@ -29,19 +29,28 @@ export default function App() {
         <div className="section-intro">
           <span className="section-number">01</span>
           <div>
-            <h2 id="section-1">How the world has changed</h2>
-            <p>Each line shows the median for each year.</p>
+            <h2 id="section-1">The big picture</h2>
+            <p>Fertility and child mortality fell, while income and enrollment rose. Each line shows the median country value.</p>
           </div>
         </div>
         <MedianTrends />
+        <details className="data-method">
+          <summary>About the data and method</summary>
+          <div>
+            <p>I used World Bank World Development Indicators from its API. The main charts follow 182 countries with fertility, GDP per person, and under-five mortality data for every year from 1990 to 2024. Missing values were left blank, not filled in.</p>
+            <p>School enrollment has fewer records, so those charts use a separate 2001–2023 sample. I kept unusual countries in the charts; chapter 5 deliberately looks at exceptions. GDP uses a log scale where labeled, and the pair comparison scales its measures for matching.</p>
+            <p>I compared countries in the same year, then compared how they changed, and finally tested predictions on countries left out of training.</p>
+            <p>Source: <a href="https://datacatalog.worldbank.org/search/dataset/0037712/world-development-indicators">World Bank WDI</a> · License: <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Country medians give each country equal weight.</p>
+          </div>
+        </details>
       </section>
 
       <section className="story-section" aria-labelledby="section-2">
         <div className="section-intro">
           <span className="section-number">02</span>
           <div>
-            <h2 id="section-2">How do countries compare?</h2>
-            <p>Now look at fertility and living conditions in the same year.</p>
+            <h2 id="section-2">Do countries follow the same pattern?</h2>
+            <p>The overall trend is clear. What happens when we compare countries in the same year?</p>
           </div>
         </div>
         <ScrollStory steps={[
@@ -57,8 +66,8 @@ export default function App() {
         <div className="section-intro">
           <span className="section-number">03</span>
           <div>
-            <h2 id="section-3">How has one country changed?</h2>
-            <p>Choose a country to see how it changed over time.</p>
+            <h2 id="section-3">Follow one country</h2>
+            <p>Each dot has a history. Choose one to see what the snapshot misses.</p>
           </div>
         </div>
         <OverviewChart selectedCountry={selectedCountry} onCountrySelect={setSelectedCountry} />
@@ -68,8 +77,8 @@ export default function App() {
         <div className="section-intro">
           <span className="section-number">04</span>
           <div>
-            <h2 id="section-4">Did these changes happen together?</h2>
-            <p>Did bigger changes in living conditions go with bigger fertility drops?</p>
+            <h2 id="section-4">Did bigger gains mean bigger fertility drops?</h2>
+            <p>Countries can look different in one year. Their paths through time are another question.</p>
           </div>
         </div>
         <ScrollStory steps={[
@@ -85,21 +94,32 @@ export default function App() {
         <div className="section-intro">
           <span className="section-number">05</span>
           <div>
-            <h2 id="section-5">Outlier pairs</h2>
-            <p>These pairs had similar income, child mortality, and enrollment in both 2001 and 2023. They were selected because their fertility rates moved apart, so they illustrate exceptions rather than typical outcomes.</p>
+            <h2 id="section-5">Similar on paper, different paths</h2>
+            <p>We chose these unusual pairs because their fertility rates split apart, despite similar income, child mortality, and enrollment.</p>
           </div>
         </div>
         <CaseComparisonChart />
       </section>
 
-      <section className="story-section" aria-labelledby="section-6">
+      <section className="story-section model-section" aria-labelledby="section-6">
         <div className="section-intro">
           <span className="section-number">06</span>
           <div>
-            <h2 id="section-6">How well did the model do?</h2>
+            <h2 id="section-6">How well can we predict fertility?</h2>
+            <p>If these measures don't tell the whole story, how far can they take us?</p>
           </div>
         </div>
         <ModelComparisonChart />
+      </section>
+
+      <section className="story-ending" aria-labelledby="story-ending-title">
+        <span className="ending-label">What I found</span>
+        <h2 id="story-ending-title">The pattern has exceptions</h2>
+        <p>Richer countries usually had lower fertility, but faster income growth did not reliably mean a bigger fertility drop. Similar countries also took different paths. These measures help predict fertility, but they don't tell every country's story.</p>
+        <div className="ending-limit">
+          <h3>What this can't tell us</h3>
+          <p>The charts show patterns, not causes. The main sample leaves out countries with missing data, and education covers fewer years. Next, I’d look at other influences and better education coverage.</p>
+        </div>
       </section>
     </main>
   )
