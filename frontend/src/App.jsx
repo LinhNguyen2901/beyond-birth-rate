@@ -19,7 +19,7 @@ export default function App() {
       <header className="intro">
         <div className="eyebrow">World Bank data · 1990–2024</div>
         <h1>Beyond the Birth Rate</h1>
-        <p>Reading Hans Rosling’s <cite>Factfulness</cite> made me wonder: if life gets better, why do families often have fewer children? I looked for patterns and exceptions across 182 countries.</p>
+        <p>If life gets better, why do families often have fewer children?</p>
         <p className="interaction-hint">Hover or focus charts for exact values.</p>
         <a className="story-start" href="#section-1">Follow the story <span aria-hidden="true">↓</span></a>
         <div className="intro-facts"><span><strong>182</strong> countries</span><span><strong>6</strong> chapters</span></div>
@@ -35,12 +35,12 @@ export default function App() {
         </div>
         <MedianTrends />
         <details className="data-method">
-          <summary>About the data and method</summary>
+          <summary>Data collection and preprocessing</summary>
           <div>
-            <p>I used World Bank World Development Indicators from its API. The main charts follow 182 countries with fertility, GDP per person, and under-five mortality data for every year from 1990 to 2024. Missing values were left blank, not filled in.</p>
-            <p>School enrollment has fewer records, so those charts use a separate 2001–2023 sample. I kept unusual countries in the charts; chapter 5 deliberately looks at exceptions. GDP uses a log scale where labeled, and the pair comparison scales its measures for matching.</p>
-            <p>I compared countries in the same year, then compared how they changed, and finally tested predictions on countries left out of training.</p>
-            <p>Source: <a href="https://datacatalog.worldbank.org/search/dataset/0037712/world-development-indicators">World Bank WDI</a> · License: <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Country medians give each country equal weight.</p>
+            <p>I downloaded fertility, GDP per person, under-five mortality, and female secondary enrollment from the World Bank WDI API.</p>
+            <p>I removed regional totals and duplicates, then reshaped the data into one row per country and year. Missing values stayed blank; charts that need complete records use only those rows. I kept unusual values rather than automatically deleting outliers.</p>
+            <p>The main charts use 182 countries from 1990 to 2024. Female secondary enrollment uses a separate 2001–2023 sample.</p>
+            <p>Source: <a href="https://datacatalog.worldbank.org/search/dataset/0037712/world-development-indicators">World Bank WDI</a> · License: <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</p>
           </div>
         </details>
       </section>
@@ -50,7 +50,6 @@ export default function App() {
           <span className="section-number">02</span>
           <div>
             <h2 id="section-2">Do countries follow the same pattern?</h2>
-            <p>The overall trend is clear. What happens when we compare countries in the same year?</p>
           </div>
         </div>
         <ScrollStory steps={[
@@ -67,7 +66,6 @@ export default function App() {
           <span className="section-number">03</span>
           <div>
             <h2 id="section-3">Follow one country</h2>
-            <p>Each dot has a history. Choose one to see what the snapshot misses.</p>
           </div>
         </div>
         <OverviewChart selectedCountry={selectedCountry} onCountrySelect={setSelectedCountry} />
@@ -78,7 +76,6 @@ export default function App() {
           <span className="section-number">04</span>
           <div>
             <h2 id="section-4">Did bigger gains mean bigger fertility drops?</h2>
-            <p>Countries can look different in one year. Their paths through time are another question.</p>
           </div>
         </div>
         <ScrollStory steps={[
@@ -113,13 +110,8 @@ export default function App() {
       </section>
 
       <section className="story-ending" aria-labelledby="story-ending-title">
-        <span className="ending-label">What I found</span>
-        <h2 id="story-ending-title">The pattern has exceptions</h2>
-        <p>Richer countries usually had lower fertility, but faster income growth did not reliably mean a bigger fertility drop. Similar countries also took different paths. These measures help predict fertility, but they don't tell every country's story.</p>
-        <div className="ending-limit">
-          <h3>What this can't tell us</h3>
-          <p>The charts show patterns, not causes. The main sample leaves out countries with missing data, and education covers fewer years. Next, I’d look at other influences and better education coverage.</p>
-        </div>
+        <h2 id="story-ending-title">The pattern is only part of the story</h2>
+        <p>Across the countries in this study, fertility and child mortality fell while income and girls’ secondary enrollment rose. The three measures helped predict fertility, but the unusual country pairs show that similar conditions can come with different fertility paths. They're useful clues, not proof of cause. Missing data limits which countries we can compare, especially for education. Next, I’d look at other influences and better education coverage.</p>
       </section>
     </main>
   )

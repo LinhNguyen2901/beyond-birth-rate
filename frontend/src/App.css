@@ -91,7 +91,7 @@
 .section-intro p { max-width: 690px; margin: 0; color: #52677b; font-size: 16px; line-height: 1.6; }
 .outlier-section .section-intro p { max-width: none; }
 
-.data-method { max-width: 900px; padding: 15px 18px; border: 1px solid #d7e5e3; border-radius: 12px; background: #fff; color: #52677b; }
+.data-method { padding: 15px 18px; border: 1px solid #d7e5e3; border-radius: 12px; background: #fff; color: #52677b; }
 .data-method summary { width: fit-content; color: #1a7774; font-size: 14px; font-weight: 700; cursor: pointer; }
 .data-method summary:focus-visible { outline: 2px solid #1a7774; outline-offset: 4px; }
 .data-method > div { margin-top: 15px; }
@@ -99,13 +99,10 @@
 .data-method p:last-child { margin-bottom: 0; }
 .data-method a { color: #1a7774; }
 
-.story-ending { max-width: 980px; margin: 44px auto 0; padding: 28px 32px; border: 1px solid #cee4df; border-radius: 18px; background: #f0f8f5; }
+.story-ending { margin: 44px 0 0; padding: 28px 32px; border: 1px solid #cee4df; border-radius: 18px; background: #f0f8f5; }
 .ending-label { color: #1a7774; font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
 .story-ending h2 { margin: 7px 0 12px; color: #17324a; font-size: clamp(24px, 3vw, 32px); }
-.story-ending p { max-width: 800px; margin: 0; color: #314b60; font-size: 17px; line-height: 1.6; }
-.story-ending .ending-limit { margin-top: 18px; padding-top: 16px; border-top: 1px solid #c9ddd8; }
-.ending-limit h3 { margin: 0 0 6px; color: #17324a; font-size: 15px; }
-.story-ending .ending-limit p { color: #52677b; font-size: 14px; }
+.story-ending p { margin: 0; color: #314b60; font-size: 17px; line-height: 1.6; }
 
 .chart-card {
   margin: 20px 0;

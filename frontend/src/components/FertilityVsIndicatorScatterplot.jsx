@@ -175,8 +175,8 @@ Under-five mortality: ${d.mortality.toFixed(1)} per 1,000`
       </div>
       <p className="chart-source">
         {isEducation
-          ? `${points.length} countries in ${year}. Separate 2001–2023 available-data sample; gross enrollment can exceed 100%. Source: World Bank WDI.`
-          : '182 countries in each year, 1990–2024. Source: World Bank WDI.'}
+          ? `${points.length} countries in ${year}. Separate 2001-2023 available-data sample. Gross enrollment can exceed 100%.`
+          : ''}
       </p>
     </section>
   )
