@@ -139,21 +139,6 @@ Under-five mortality: ${d.mortality.toFixed(1)} per 1,000`
         <span className="range-end">{lastYear}</span>
       </label>
 
-      <label>
-        Compare with:{' '}
-        <select value={indicator} onChange={e => {
-          const next = e.target.value
-          onExplore?.(measureNames[next])
-          setPlaying(false)
-          if (next === 'education') setYear(current => Math.max(2001, Math.min(2023, current)))
-          setIndicator(next)
-        }}>
-          <option value="gdp_pc">GDP per person</option>
-          <option value="mortality">Child mortality</option>
-          <option value="education">Female secondary enrollment</option>
-        </select>
-      </label>
-
       <button type="button" onClick={() => { onExplore?.(measureNames[indicator]); setPlaying(value => !value) }}>
         {playing ? 'Pause years' : 'Play years'}
       </button>

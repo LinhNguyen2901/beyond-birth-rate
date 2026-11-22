@@ -31,9 +31,8 @@ const educationChanges = educationData.filter(d => d.year === 2001 && educationE
     }
   })
 
-export default function CountryChangeChart({ initialIndicator = 'gdp', onExplore }) {
+export default function CountryChangeChart({ initialIndicator: indicator = 'gdp', onExplore }) {
   const chartRef = useRef(null)
-  const [indicator, setIndicator] = useState(initialIndicator)
   const [showAllIncome, setShowAllIncome] = useState(false)
   const [chartSize, setChartSize] = useState({ width: 700, height: 340 })
   const points = indicator === 'education' ? educationChanges : changes
@@ -105,16 +104,6 @@ export default function CountryChangeChart({ initialIndicator = 'gdp', onExplore
     <section className="chart-card">
       <div className="chart-top">
       <p className="selection-note">Shaded area: {indicator === 'mortality' ? 'mortality and fertility both fell.' : indicator === 'gdp' ? 'income rose while fertility fell.' : 'enrollment rose while fertility fell.'}</p>
-      <label>Compare fertility change with:{' '}
-        <select value={indicator} onChange={e => {
-          setIndicator(e.target.value)
-          onExplore?.(e.target.options[e.target.selectedIndex].text)
-        }}>
-          <option value="gdp">GDP per person change (%)</option>
-          <option value="mortality">Child mortality change (%)</option>
-          <option value="education">Female enrollment change (percentage points)</option>
-        </select>
-      </label>
       {indicator === 'gdp' && <div className="change-range">
         <div role="group" aria-label="Income change range">
           <button type="button" aria-pressed={!showAllIncome} onClick={() => {
