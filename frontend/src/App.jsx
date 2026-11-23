@@ -108,8 +108,30 @@ export default function App() {
       </section>
 
       <section className="story-ending" aria-labelledby="story-ending-title">
-        <h2 id="story-ending-title">The pattern is only part of the story</h2>
-        <p>Across the countries in this study, fertility and child mortality fell while income and girls’ secondary enrollment rose. The three measures helped predict fertility, but the unusual country pairs show that similar conditions can come with different fertility paths. They're useful clues, not proof of cause. Missing data limits which countries we can compare, especially for education. Next, I’d look at other influences and better education coverage.</p>
+        <div className="ending-heading">
+          <span className="ending-label">The takeaway</span>
+          <h2 id="story-ending-title">So, what did we learn?</h2>
+        </div>
+        <ol className="ending-grid">
+          <li className="ending-card">
+            <span className="ending-number">01</span>
+            <h3>A clear overall pattern</h3>
+            <p>Across countries, lower fertility generally goes together with higher incomes, lower child mortality, and higher female secondary enrollment.</p>
+          </li>
+          <li className="ending-card">
+            <span className="ending-number">02</span>
+            <h3>But no single path</h3>
+            <p>Bigger development gains don't always come with bigger fertility declines. Even countries with similar indicators can follow very different fertility paths.</p>
+          </li>
+          <li className="ending-card">
+            <span className="ending-number">03</span>
+            <h3>Useful signals, not the whole story</h3>
+            <p>These indicators improve fertility prediction, but they cannot fully explain the differences between countries or tell us what causes fertility to change.</p>
+          </li>
+        </ol>
+        <div className="ending-final">
+          <p>Income, child survival, and female education reveal an important pattern in fertility, but every country's story is more complicated than a few factors can capture.</p>
+        </div>
       </section>
     </main>
   )
