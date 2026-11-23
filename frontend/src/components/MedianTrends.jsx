@@ -87,12 +87,15 @@ function TrendChart({ measure }) {
 
   const format = measure.key === 'gdp_pc' ? d3.format('$,.0f') : d3.format(',.2f')
   const unit = measure.key === 'education' ? '%' : ''
+  const firstValue = chartData[0][measure.key]
+  const lastValue = chartData[chartData.length - 1][measure.key]
+  const percentChange = 100 * (lastValue / firstValue - 1)
 
   return (
     <section className="chart-card median-panel" style={{ borderTopColor: measure.color }}>
       <h3>{measure.title}</h3>
       <p className="median-unit">{measure.unit}</p>
-      <p className="trend-values">{firstYear}: <strong>{format(chartData[0][measure.key])}{unit}</strong> &nbsp;→&nbsp; {lastYear}: <strong>{format(chartData[chartData.length - 1][measure.key])}{unit}</strong></p>
+      <p className="trend-values">{firstYear}: <strong>{format(firstValue)}{unit}</strong> &nbsp;→&nbsp; {lastYear}: <strong>{format(lastValue)}{unit}</strong> ({percentChange >= 0 ? '↑' : '↓'}{d3.format('.1f')(Math.abs(percentChange))}%)</p>
       <svg ref={chartRef} role="img" aria-label={`${measure.title} trend from ${firstYear} to ${lastYear}`} />
       <div className="chart-tooltip" aria-hidden="true" />
       <p className="chart-readout" aria-live="polite">Hover or focus a mark to see its exact values.</p>
