@@ -75,7 +75,7 @@ export default function App() {
         <div className="section-intro">
           <span className="section-number">04</span>
           <div>
-            <h2 id="section-4">Did bigger gains mean bigger fertility drops?</h2>
+            <h2 id="section-4">Did bigger development gains go with bigger fertility drop?</h2>
           </div>
         </div>
         <ScrollStory steps={[
@@ -91,8 +91,7 @@ export default function App() {
         <div className="section-intro">
           <span className="section-number">05</span>
           <div>
-            <h2 id="section-5">Similar on paper, different paths</h2>
-            <p>We chose these unusual pairs because their fertility rates split apart, despite similar income, child mortality, and enrollment.</p>
+            <h2 id="section-5">Similar development, different fertility paths</h2>
           </div>
         </div>
         <CaseComparisonChart />
@@ -103,7 +102,6 @@ export default function App() {
           <span className="section-number">06</span>
           <div>
             <h2 id="section-6">How well can we predict fertility?</h2>
-            <p>If these measures don't tell the whole story, how far can they take us?</p>
           </div>
         </div>
         <ModelComparisonChart />

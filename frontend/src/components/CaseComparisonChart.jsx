@@ -159,7 +159,6 @@ export default function CaseComparisonChart() {
 
   return (
     <section className="chart-card case-card">
-      <h2>How these pairs changed</h2>
       <label>Choose a pair
         <select value={caseIndex} onChange={e => setCaseIndex(Number(e.target.value))}>
           {shortlist.map((item, index) =>
@@ -190,7 +189,7 @@ export default function CaseComparisonChart() {
       </div>
       <details className="case-method">
         <summary>How were these pairs chosen?</summary>
-        <p>From {rows.length} eligible countries, {shortlist.length} pairs met these rules: scaled distance ≤ 0.35 across income, mortality, and education in 2001 and 2023; starting fertility gap ≤ 0.5; gap growth ≥ 0.5. Fertility was excluded from the similarity score. Axes stay fixed; GDP uses a log scale. Source: World Bank WDI.</p>
+        <p>We started with {rows.length} countries that had the data we needed. {shortlist.length} pairs had similar income, child mortality, and female secondary enrollment in both 2001 and 2023, but their fertility rates moved apart. Their scaled difference on those three measures was at most 0.35. Their fertility rates started within 0.5 births per woman and the gap grew by at least 0.5.</p>
       </details>
     </section>
   )
