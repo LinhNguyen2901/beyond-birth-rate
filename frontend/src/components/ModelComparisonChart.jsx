@@ -16,10 +16,10 @@ const colors = {
 }
 
 const labels = {
-  'Median baseline': 'Median guess',
-  'All three indicators': 'Use all three measures',
+  'Median baseline': 'Baseline: median',
+  'All three indicators': 'Full model: all three indicators',
   'Without GDP': 'Leave out income',
-  'Without education': 'Leave out education',
+  'Without education': 'Leave out female education',
   'Without mortality': 'Leave out child mortality',
 }
 const baseline = scores.find(d => d.name === 'Median baseline')
@@ -73,17 +73,17 @@ export default function ModelComparisonChart() {
       .attr('width', width + margin.left + margin.right - 5).attr('height', y.step())
       .attr('fill', 'transparent').attr('pointer-events', 'all')
       .attr('tabindex', 0)
-      .attr('aria-label', d => `${labels[d.name]}: average prediction miss ${d.mae.toFixed(3)} births per woman`)
+      .attr('aria-label', d => `${labels[d.name]}: average absolute prediction error ${d.mae.toFixed(3)} births per woman`)
     hits.on('mouseover.highlight', (event, d) => bars.filter(row => row.name === d.name).classed('is-active', true))
       .on('focus.highlight', (event, d) => bars.filter(row => row.name === d.name).classed('is-active', true))
       .on('mouseout.highlight', () => bars.classed('is-active', false))
       .on('blur.highlight', () => bars.classed('is-active', false))
     addTooltip(hits, chartRef.current, d =>
-      `${labels[d.name]}\nAverage prediction miss: ${d.mae.toFixed(3)} births per woman`
+      `${labels[d.name]}\nAverage prediction error: ${d.mae.toFixed(3)} births per woman`
     )
 
     chart.append('text').attr('x', width / 2).attr('y', height + 48)
-      .attr('text-anchor', 'middle').text(compact ? 'Average miss (births per woman)' : 'Average prediction miss (births per woman)')
+      .attr('text-anchor', 'middle').text(compact ? 'Average error (births per woman)' : 'Average prediction error (births per woman)')
   }, [chartWidth])
 
   return (
@@ -93,19 +93,23 @@ export default function ModelComparisonChart() {
           <div className="model-takeaway">
             <div>
               <span>Main result</span>
-              <strong>{improvement}% smaller misses</strong>
-              <p>Using all three measures instead of one median guess for every country.</p>
+              <strong>{improvement}% lower error vs. baseline</strong>
+              <p>Child mortality and female secondary enrollment improved predictions the most while income added little. The model was still off by about 0.5 births per woman on average, suggesting there are other factors to consider.</p>
             </div>
           </div>
-          <p className="chart-source model-source">World Bank WDI, 2001–2023; complete records only. Random forest tested on held-out countries in five rounds.</p>
+          <p className="chart-source model-source">World Bank WDI, 2001–2023.</p>
         </div>
         <div className="model-plot">
-          <h3>Shorter bars mean better predictions</h3>
-          <svg ref={chartRef} role="img" aria-label={`Average prediction miss in births per woman: ${baseline.mae.toFixed(2)} when predicting the training data's median fertility rate for every country, versus ${full.mae.toFixed(2)} using income, child mortality, and education. The last three bars leave out one measure each. Shorter bars are better.`} />
+          <svg ref={chartRef} role="img" aria-label={`Average prediction error in births per woman: ${baseline.mae.toFixed(2)} when predicting the training data's median fertility rate for every country, versus ${full.mae.toFixed(2)} using income, child mortality, and education. The last three bars leave out one measure each. Shorter bars are better.`} />
           <div className="chart-tooltip" aria-hidden="true" />
           <p className="chart-readout" aria-live="polite">Hover or focus a mark to see its exact values.</p>
+          <p className="model-error-note">An error of 0.5 means predicting 3.0 births per woman when the actual rate was 3.5. Shorter bars mean smaller average errors.</p>
         </div>
       </div>
+      <details className="model-method">
+        <summary>How were the predictions tested?</summary>
+        <p>We trained a random forest on country-year records from 2001–2023 and tested it on countries it had not seen, repeating this in five rounds. Every model used the same records. Records missing fertility, income, child mortality, or female secondary enrollment were excluded, so the result may not represent countries with less complete data.</p>
+      </details>
     </section>
   )
 }

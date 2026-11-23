@@ -294,6 +294,11 @@
 .model-takeaway { padding: 23px 26px; border: 1px solid #cee4df; border-radius: 13px; background: #f0f8f5; }
 .model-takeaway > div:first-child > span { display: block; margin-bottom: 5px; color: #1a7774; font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
 .model-takeaway > div:first-child > strong { display: block; margin-bottom: 8px; color: #17324a; font-size: clamp(26px, 4vw, 36px); letter-spacing: -.03em; }
+.model-takeaway p { margin: 10px 0 0; line-height: 1.5; }
+.model-error-note { margin: 0; color: #52677b; font-size: 14px; line-height: 1.5; }
+.model-method { margin-top: 12px; color: #52677b; font-size: 14px; line-height: 1.5; }
+.model-method summary { width: fit-content; color: #1a7774; font-weight: 700; cursor: pointer; }
+.model-method p { margin: 8px 0 0; }
 .model-card .model-source { margin: 0 12px; line-height: 1.5; }
 .model-card svg { max-width: none; margin-top: 8px; }
 .model-card svg .value { fill: #17324a; font-size: 13px; font-weight: 700; }
