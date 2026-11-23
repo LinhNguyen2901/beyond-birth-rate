@@ -59,7 +59,7 @@ export default function ScrollStory({ steps, children }) {
       </div>
       {wide && <div className="story-stage">
         <div className="story-stage-nav" aria-label="Story steps">
-          <span>{exploring ? 'Your choice stays on screen' : 'Scroll to change the view ↓'}</span>
+          <span>{exploring ? '' : 'Scroll to change the view ↓'}</span>
           <div>{steps.map((step, index) => <button key={step.title} type="button"
             aria-label={`Show step ${index + 1}: ${step.title}`} aria-pressed={active === index}
             onClick={event => {

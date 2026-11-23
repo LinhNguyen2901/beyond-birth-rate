@@ -15,7 +15,7 @@ const historyCountries = new Set(data.map(d => d.iso3))
 
 const measureNames = { gdp_pc: 'GDP per person', mortality: 'child mortality', education: 'female secondary enrollment' }
 
-export default function FertilityVsIndicatorScatterplot({ selectedCountry, onCountrySelect, initialYear = 2024, initialIndicator = 'gdp_pc', onExplore }) {
+export default function FertilityVsIndicatorScatterplot({ selectedCountry, onCountrySelect, initialYear = 2024, initialIndicator = 'gdp_pc' }) {
   const chartRef = useRef(null)
   const [chartSize, setChartSize] = useState({ width: 700, height: 340 })
   const [year, setYear] = useState(initialYear)
@@ -129,21 +129,18 @@ Under-five mortality: ${d.mortality.toFixed(1)} per 1,000`
     <section className="chart-card">
       <div className="chart-top">
       <h2>Fertility and {measureNames[indicator]}</h2>
-      <p>Choose a dot to bring that country into the next chapter.</p>
-
       <label>
         Year: {year}{' '}
         <span className="range-end">{firstYear}</span>
         <input type="range" min={firstYear} max={lastYear} value={year}
-          onChange={e => { setPlaying(false); setYear(Number(e.target.value)); onExplore?.(measureNames[indicator]) }} />
+          onChange={e => { setPlaying(false); setYear(Number(e.target.value)) }} />
         <span className="range-end">{lastYear}</span>
       </label>
 
-      <button type="button" onClick={() => { onExplore?.(measureNames[indicator]); setPlaying(value => !value) }}>
+      <button type="button" onClick={() => setPlaying(value => !value)}>
         {playing ? 'Pause years' : 'Play years'}
       </button>
       <button type="button" className="secondary-button" onClick={() => {
-        onExplore?.(measureNames.gdp_pc)
         setPlaying(false)
         setYear(2024)
         setIndicator('gdp_pc')

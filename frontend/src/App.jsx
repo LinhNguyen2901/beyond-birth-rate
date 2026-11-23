@@ -57,7 +57,7 @@ export default function App() {
           { title: 'Look at child mortality', indicator: 'mortality', year: 2024, text: 'Countries with more deaths among young children usually have higher fertility.' },
           { title: 'Look at education', indicator: 'education', year: 2023, text: 'Higher female secondary enrollment often goes with lower fertility. These data cover fewer countries.' },
         ]}>
-          {(step, onExplore) => <FertilityVsIndicatorScatterplot selectedCountry={selectedCountry} onCountrySelect={setSelectedCountry} initialYear={step.year} initialIndicator={step.indicator} onExplore={onExplore} />}
+          {(step) => <FertilityVsIndicatorScatterplot selectedCountry={selectedCountry} onCountrySelect={setSelectedCountry} initialYear={step.year} initialIndicator={step.indicator} />}
         </ScrollStory>
       </section>
 
