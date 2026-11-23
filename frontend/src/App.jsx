@@ -83,7 +83,7 @@ export default function App() {
           { title: 'Child mortality', indicator: 'mortality', text: 'A big drop in child mortality did not always mean a big drop in fertility.' },
           { title: 'Education', indicator: 'education', text: 'Countries with bigger enrollment gains often had bigger fertility drops, but not always.' },
         ]}>
-          {(step, onExplore) => <CountryChangeChart initialIndicator={step.indicator} onExplore={onExplore} />}
+          {(step) => <CountryChangeChart initialIndicator={step.indicator} />}
         </ScrollStory>
       </section>
 

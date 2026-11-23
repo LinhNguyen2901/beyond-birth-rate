@@ -31,7 +31,7 @@ const educationChanges = educationData.filter(d => d.year === 2001 && educationE
     }
   })
 
-export default function CountryChangeChart({ initialIndicator: indicator = 'gdp', onExplore }) {
+export default function CountryChangeChart({ initialIndicator: indicator = 'gdp' }) {
   const chartRef = useRef(null)
   const [showAllIncome, setShowAllIncome] = useState(false)
   const [chartSize, setChartSize] = useState({ width: 700, height: 340 })
@@ -108,11 +108,9 @@ export default function CountryChangeChart({ initialIndicator: indicator = 'gdp'
         <div role="group" aria-label="Income change range">
           <button type="button" aria-pressed={!showAllIncome} onClick={() => {
             setShowAllIncome(false)
-            onExplore?.('GDP per person change (%)')
           }}>Main cluster</button>
           <button type="button" aria-pressed={showAllIncome} onClick={() => {
             setShowAllIncome(true)
-            onExplore?.('GDP per person change (%)')
           }}>All countries</button>
         </div>
         <p role="status">{showAllIncome
@@ -123,7 +121,7 @@ export default function CountryChangeChart({ initialIndicator: indicator = 'gdp'
       <svg ref={chartRef} role="img" aria-label={`${period} country changes: fertility and ${indicator}${indicator === 'gdp' && !showAllIncome ? ', income range minus 100 to plus 500 percent' : ', all countries'}`} />
       <div className="chart-tooltip" aria-hidden="true" />
       <p className="chart-readout" aria-live="polite">Hover or focus a mark to see its exact values.</p>
-      <p className="chart-source">{points.length} countries. Percent changes are relative to starting values. {indicator === 'education' && 'Enrollment uses percentage-point changes and countries with data at both endpoints. '}</p>
+      <p className="chart-source">{points.length} countries. Percent changes are relative to starting values.</p>
     </section>
   )
 }
