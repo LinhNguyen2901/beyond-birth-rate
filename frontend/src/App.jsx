@@ -17,9 +17,10 @@ export default function App() {
     <main className="page">
       <motion.div className="reading-progress" style={{ scaleX: scrollYProgress }} aria-hidden="true" />
       <header className="intro">
-        <div className="eyebrow">World Bank data · 1990–2024</div>
+        <div className="eyebrow">World Bank data · country-level analysis</div>
         <h1>Beyond the Birth Rate</h1>
-        <p>If life gets better, why do families often have fewer children?</p>
+        <p>How have fertility rates changed alongside income, child survival, and female secondary enrollment and where do countries differ?</p>
+        <p className="sample-note">Main sample: 182 countries, 1990-2024. Female Education: separate 2001-2023 sample.</p>
         <p className="interaction-hint">Hover or focus charts for exact values.</p>
         <a className="story-start" href="#section-1">Follow the story <span aria-hidden="true">↓</span></a>
         <div className="intro-facts"><span><strong>182</strong> countries</span><span><strong>6</strong> chapters</span></div>
@@ -55,7 +56,7 @@ export default function App() {
         <ScrollStory steps={[
           { title: 'Look at income', indicator: 'gdp_pc', year: 2024, text: 'Higher-income countries usually have lower fertility, but there are plenty of exceptions.' },
           { title: 'Look at child mortality', indicator: 'mortality', year: 2024, text: 'Countries with more deaths among young children usually have higher fertility.' },
-          { title: 'Look at education', indicator: 'education', year: 2023, text: 'Higher female secondary enrollment often goes with lower fertility. These data cover fewer countries.' },
+          { title: 'Look at education', indicator: 'education', year: 2023, text: 'Higher female secondary enrollment often goes with lower fertility. This is a separate 2001–2023 sample with fewer countries.' },
         ]}>
           {(step) => <FertilityVsIndicatorScatterplot selectedCountry={selectedCountry} onCountrySelect={setSelectedCountry} initialYear={step.year} initialIndicator={step.indicator} />}
         </ScrollStory>
@@ -75,12 +76,12 @@ export default function App() {
         <div className="section-intro">
           <span className="section-number">04</span>
           <div>
-            <h2 id="section-4">Did bigger development gains go with bigger fertility drop?</h2>
+            <h2 id="section-4">Did bigger development gains go with bigger fertility drops?</h2>
           </div>
         </div>
         <ScrollStory steps={[
           { title: 'Income', indicator: 'gdp', text: 'Faster income growth did not always go with a bigger fertility drop.' },
-          { title: 'Child mortality', indicator: 'mortality', text: 'A big drop in child mortality did not always mean a big drop in fertility.' },
+          { title: 'Child mortality', indicator: 'mortality', text: 'Larger drops in child mortality often went with larger fertility drops, though countries varied.' },
           { title: 'Education', indicator: 'education', text: 'Countries with bigger enrollment gains often had bigger fertility drops, but not always.' },
         ]}>
           {(step) => <CountryChangeChart initialIndicator={step.indicator} />}

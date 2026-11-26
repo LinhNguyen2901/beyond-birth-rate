@@ -54,6 +54,7 @@
 .intro h1 { max-width: 820px; color: #fff; font-size: clamp(42px, 6vw, 80px); }
 .intro p { max-width: 740px; color: #d1e0e8; }
 .intro .interaction-hint { color: #99d9cc; }
+.intro .sample-note { margin-top: 14px; color: #b8cfd7; font-size: 14px; }
 .intro .story-start { background: #f4d2bd; color: #17324a; }
 .intro .story-start:hover { background: #fff0e5; }
 .intro-facts { display: flex; flex-wrap: wrap; gap: 20px 48px; margin-top: 40px; padding-top: 24px; border-top: 1px solid #ffffff26; }

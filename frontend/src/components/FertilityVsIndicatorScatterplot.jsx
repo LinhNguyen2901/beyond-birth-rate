@@ -142,8 +142,8 @@ Under-five mortality: ${d.mortality.toFixed(1)} per 1,000`
       </button>
       <button type="button" className="secondary-button" onClick={() => {
         setPlaying(false)
-        setYear(2024)
-        setIndicator('gdp_pc')
+        setYear(initialYear)
+        setIndicator(initialIndicator)
       }}>Reset view</button>
       </div>
 
