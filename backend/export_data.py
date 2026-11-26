@@ -5,8 +5,9 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error
 from sklearn.model_selection import GroupKFold
 
-input_file = Path("../data/processed/country_year_panel.csv")
-output_file = Path("../frontend/src/data/fertility_trend.json")
+root = Path(__file__).resolve().parents[1]
+input_file = root / "data/processed/country_year_panel.csv"
+output_file = root / "frontend/src/data/fertility_trend.json"
 
 data = pd.read_csv(input_file)
 period = data[data["year"].between(1990, 2024)]
@@ -30,7 +31,7 @@ scatter_data = sample[
     ["iso3", "country", "region", "year", "fertility", "gdp_pc", "mortality"]
 ]
 
-scatter_file = Path("../frontend/src/data/country_year.json")
+scatter_file = root / "frontend/src/data/country_year.json"
 scatter_data.to_json(scatter_file, orient="records", indent=2)
 
 print("Scatterplot rows:", len(scatter_data))
@@ -39,7 +40,7 @@ print("Saved:", scatter_file)
 # Three yearly medians for the main 1990-2024 sample.
 trends = sample.groupby("year")[["fertility", "mortality", "gdp_pc"]].median()
 trends = trends.round(3).reset_index()
-trends_file = Path("../frontend/src/data/core_trends.json")
+trends_file = root / "frontend/src/data/core_trends.json"
 trends.to_json(trends_file, orient="records", indent=2)
 print("Saved:", trends_file)
 
@@ -48,7 +49,7 @@ education = data[data["year"].between(2001, 2023)].dropna(
     subset=["fertility", "gdp_pc", "mortality", "education"]
 )
 education = education[education["gdp_pc"] > 0]
-education_file = Path("../frontend/src/data/education_year.json")
+education_file = root / "frontend/src/data/education_year.json"
 education[["iso3", "country", "region", "year", "fertility", "education"]].to_json(
     education_file, orient="records", indent=2
 )
@@ -61,7 +62,7 @@ peer_codes = ["CAF", "BFA", "RWA", "GIN", "MOZ", "TCD"]
 peer_history = data[
     data["iso3"].isin(peer_codes) & data["year"].between(2001, 2023)
 ]
-peer_file = Path("../frontend/src/data/peer_history.json")
+peer_file = root / "frontend/src/data/peer_history.json"
 peer_history[
     ["iso3", "country", "year", "fertility", "gdp_pc", "mortality", "education"]
 ].to_json(peer_file, orient="records", indent=2)
@@ -106,7 +107,7 @@ for name, columns in models.items():
         ))
     scores.append({"name": name, "mae": sum(errors) / 5})
 
-model_file = Path("../frontend/src/data/model_scores.json")
+model_file = root / "frontend/src/data/model_scores.json"
 pd.DataFrame(scores).round(3).to_json(model_file, orient="records", indent=2)
 print("Model comparison rows:", len(scores))
 print("Saved:", model_file)

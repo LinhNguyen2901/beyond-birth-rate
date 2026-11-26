@@ -1,13 +1,22 @@
 {
   "raw_rows": 70224,
   "empty_iso3_rows": 1320,
+  "missing_year_rows": 0,
+  "missing_value_rows": 17222,
   "duplicate_keys": 0,
+  "unmatched_country_codes": [],
   "aggregate_rows": 11616,
   "country_rows": 57288,
   "economies": 217,
+  "panel_rows": 14322,
+  "missing_panel_values": {
+    "fertility": 249,
+    "gdp_pc": 2789,
+    "mortality": 2461,
+    "education": 8622
+  },
   "nonpositive_gdp": 0,
   "education_above_100": 1104,
-  "observation_status_counts": {
-    "": 70224
-  }
+  "handling": "No imputation or automatic outlier deletion; gross enrollment may exceed 100%.",
+  "raw_csv_sha256": "b8914b03a4d29982875559575e543b72ae3dafe2769be69e5685fe5f86c6600f"
 }
